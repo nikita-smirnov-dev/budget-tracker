@@ -1,7 +1,12 @@
-<script setup></script>
+<script setup>
+import Header from '@/components/Header.vue';
+// import Footer from '@/components/Footer.vue';
+</script>
 
 <template>
-  <main>
-    <h1>Бюджет Трекер</h1>
+  <Header />
+  <main class="main">
+    <section class="container budget"></section>
   </main>
+  <!-- <Footer /> -->
 </template>
