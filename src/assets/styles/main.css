@@ -75,3 +75,38 @@ input::-webkit-inner-spin-button {
   margin: 0 auto;
   padding: 0 20px;
 }
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.main {
+  flex-grow: 1;
+}
+
+.budget {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 40px 0;
+}
+
+.budget--card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+  padding: 20px;
+  border-radius: 8px;
+  background: var(--card-bg-color);
+}
+
+.budget__title {
+  margin: 0;
+}
+
+.budget__subtitle {
+  margin: 0;
+}
