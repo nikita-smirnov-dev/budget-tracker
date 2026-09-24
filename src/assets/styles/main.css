@@ -71,7 +71,7 @@ img {
   padding: 40px 0;
 }
 
-.budget--card {
+.card {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -79,12 +79,4 @@ img {
   padding: 20px;
   border-radius: 8px;
   background: var(--card-bg-color);
-}
-
-.budget__title {
-  margin: 0;
-}
-
-.budget__subtitle {
-  margin: 0;
 }
