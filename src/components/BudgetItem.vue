@@ -1,39 +1,52 @@
 <script setup lang="ts">
+import type { Budget } from '@/types/budgetTypes';
 import { AkTrashCan } from '@kalimahapps/vue-icons';
+
+import { AkArrowUpRight } from '@kalimahapps/vue-icons';
+import { AkArrowDownLeft } from '@kalimahapps/vue-icons';
+
+const props = defineProps<{
+  transaction: Budget;
+}>();
 </script>
 
 <template>
-  <li class="budget-item">
-    <div class="budget-item__left">
-      <span class="budget-item__name">budget</span>
-    </div>
-    <div class="budget-item__right">
-      <span class="budget-item__sum">10</span>
-      <button
-        class="budget-item__delete btn-reset"
-        data-delete-id="${item.id}"
-        aria-label="Удалить"
-      >
-        <AkTrashCan aria-hidden="true" />
-      </button>
-    </div>
-  </li>
+  <div class="budget-item__left">
+    <AkArrowUpRight
+      v-if="transaction.type === 'income'"
+      class="budget-item__arrow-up"
+    />
+
+    <AkArrowDownLeft v-else class="budget-item__arrow-down" />
+    <span class="budget-item__name">{{ transaction.title }}</span>
+  </div>
+  <div class="budget-item__right">
+    <span class="budget-item__sum">{{ transaction.amount }}</span>
+    <button class="budget-item__delete btn-reset" aria-label="Удалить">
+      <AkTrashCan aria-hidden="true" />
+    </button>
+  </div>
 </template>
 
 <style scoped>
-.budget-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px;
-  border-radius: 8px;
-  background: var(--main-color);
-}
-
 .budget-item__left {
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.budget-item__arrow-up,
+.budget-item__arrow-down {
+  width: 20px;
+  height: 20px;
+}
+
+.budget-item__arrow-up {
+  color: var(--incomes-color);
+}
+
+.budget-item__arrow-down {
+  color: var(--expense-color);
 }
 
 .budget-item__right {

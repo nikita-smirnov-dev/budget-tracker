@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import BaseInput from '@/UI/BaseInput.vue';
 import BudgetItem from './BudgetItem.vue';
+import type { Budget } from '@/types/budgetTypes.ts';
+
+const props = defineProps<{
+  transactions: Budget[] | null;
+}>();
 </script>
 
 <template>
@@ -40,7 +45,13 @@ import BudgetItem from './BudgetItem.vue';
       </div>
     </div>
     <ul class="budget-history__list list-reset" data-history-list>
-      <BudgetItem />
+      <li
+        class="budget-history__item"
+        v-for="item of transactions"
+        :key="item.id"
+      >
+        <BudgetItem :transaction="item" />
+      </li>
     </ul>
   </div>
 </template>
@@ -118,5 +129,14 @@ import BudgetItem from './BudgetItem.vue';
   flex-direction: column;
   gap: 20px;
   flex-grow: 1;
+}
+
+.budget-history__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 8px;
+  background: var(--main-color);
 }
 </style>
