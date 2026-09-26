@@ -3,9 +3,11 @@ import BudgetBalance from '@/components/BudgetBalance.vue';
 import BudgetForm from '@/components/BudgetForm.vue';
 import BudgetHistory from '@/components/BudgetHistory.vue';
 import type { Budget } from '@/types/budgetTypes';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
-const transactions = ref<Budget[]>([]);
+const transactions = ref<Budget[]>(
+  JSON.parse(localStorage.getItem('my-budget-list') || '[]'),
+);
 
 const updateTransactions = (transaction: Budget) => {
   transactions.value.push(transaction);
@@ -27,6 +29,14 @@ const totalBalance = computed(() => {
 const deleteTransaction = (id: string) => {
   transactions.value = transactions.value.filter((item) => item.id !== id);
 };
+
+watch(
+  transactions,
+  (newValues) => {
+    localStorage.setItem('my-budget-list', JSON.stringify(newValues));
+  },
+  { deep: true },
+);
 </script>
 
 <template>
