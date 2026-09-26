@@ -7,7 +7,7 @@ export interface Budget {
   type: TransactionType;
 }
 
-export type FilterType = 'all' | 'income' | 'expense';
+export type FilterType = 'all' | 'incomes' | 'expenses';
 
 export interface FilterHistory {
   filter: FilterType;

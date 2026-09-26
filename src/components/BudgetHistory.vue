@@ -2,7 +2,7 @@
 import BaseInput from '@/UI/BaseInput.vue';
 import BudgetItem from './BudgetItem.vue';
 import type { Budget, FilterHistory } from '@/types/budgetTypes.ts';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 const props = defineProps<{
   transactions: Budget[] | null;
@@ -10,6 +10,19 @@ const props = defineProps<{
 
 const filterHistory = ref<FilterHistory>({
   filter: 'all',
+});
+
+const filteredTransactions = computed(() => {
+  if (filterHistory.value.filter === 'all') {
+    return props.transactions || [];
+  } else if (filterHistory.value.filter === 'incomes') {
+    return props.transactions?.filter((item) => item.type === 'income') || [];
+  } else if (filterHistory.value.filter === 'expenses') {
+    return props.transactions?.filter((item) => item.type === 'expense') || [];
+  } else {
+    const _: never = filterHistory.value.filter;
+    throw new Error();
+  }
 });
 </script>
 
@@ -52,19 +65,20 @@ const filterHistory = ref<FilterHistory>({
         >
       </div>
     </div>
-    <ul class="budget-history__list list-reset" data-history-list>
+    <ul
+      v-if="filteredTransactions?.length > 0"
+      class="budget-history__list list-reset"
+      data-history-list
+    >
       <li
         class="budget-history__item"
-        v-if="transactions?.length !== 0"
-        v-for="item of transactions"
+        v-for="item of filteredTransactions"
         :key="item.id"
       >
         <BudgetItem :transaction="item" />
       </li>
-      <li v-else>
-        <p class="budget__descr">История операций пуста</p>
-      </li>
     </ul>
+    <p v-else class="budget__descr">История операций пуста</p>
   </div>
 </template>
 
@@ -153,8 +167,11 @@ const filterHistory = ref<FilterHistory>({
 }
 
 .budget__descr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
   margin: 0;
-  text-align: center;
   color: var(--secondary-text-color);
   font-size: 1.1rem;
 }
