@@ -23,12 +23,19 @@ const totalBalance = computed(() => {
   }, 0);
   return total;
 });
+
+const deleteTransaction = (id: string) => {
+  transactions.value = transactions.value.filter((item) => item.id !== id);
+};
 </script>
 
 <template>
   <section class="container budget">
     <BudgetBalance :total="totalBalance" />
-    <BudgetHistory :transactions="transactions" />
+    <BudgetHistory
+      :transactions="transactions"
+      @delete-transaction="deleteTransaction"
+    />
     <BudgetForm @add-transaction="updateTransactions" />
   </section>
 </template>

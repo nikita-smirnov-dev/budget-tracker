@@ -65,7 +65,9 @@ const sendForm = () => {
         >Расход</BaseInput
       >
     </div>
-    <BaseButton class="budget-form__btn">Добавить транзакцию</BaseButton>
+    <BaseButton class="budget-form__btn" type="submit"
+      >Добавить транзакцию</BaseButton
+    >
   </form>
 </template>
 

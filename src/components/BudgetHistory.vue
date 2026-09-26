@@ -8,6 +8,8 @@ const props = defineProps<{
   transactions: Budget[] | null;
 }>();
 
+const emit = defineEmits(['delete-transaction']);
+
 const filterHistory = ref<FilterHistory>({
   filter: 'all',
 });
@@ -75,7 +77,10 @@ const filteredTransactions = computed(() => {
         v-for="item of filteredTransactions"
         :key="item.id"
       >
-        <BudgetItem :transaction="item" />
+        <BudgetItem
+          :transaction="item"
+          @delete="$emit('delete-transaction', $event)"
+        />
       </li>
     </ul>
     <p v-else class="budget__descr">История операций пуста</p>

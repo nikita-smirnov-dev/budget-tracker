@@ -5,6 +5,8 @@ import { AkTrashCan } from '@kalimahapps/vue-icons';
 import { AkArrowUpRight } from '@kalimahapps/vue-icons';
 import { AkArrowDownLeft } from '@kalimahapps/vue-icons';
 
+const emit = defineEmits(['delete']);
+
 const props = defineProps<{
   transaction: Budget;
 }>();
@@ -22,7 +24,11 @@ const props = defineProps<{
   </div>
   <div class="budget-item__right">
     <span class="budget-item__sum">{{ transaction.amount }}</span>
-    <button class="budget-item__delete btn-reset" aria-label="Удалить">
+    <button
+      class="budget-item__delete btn-reset"
+      aria-label="Удалить"
+      @click="$emit('delete', props.transaction.id)"
+    >
       <AkTrashCan aria-hidden="true" />
     </button>
   </div>
