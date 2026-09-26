@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import BaseInput from '@/UI/BaseInput.vue';
 import BudgetItem from './BudgetItem.vue';
-import type { Budget } from '@/types/budgetTypes.ts';
+import type { Budget, FilterHistory } from '@/types/budgetTypes.ts';
+import { ref } from 'vue';
 
 const props = defineProps<{
   transactions: Budget[] | null;
 }>();
+
+const filterHistory = ref<FilterHistory>({
+  filter: 'all',
+});
 </script>
 
 <template>
@@ -24,6 +29,7 @@ const props = defineProps<{
           value="all"
           is-checked
           variant-action="radio"
+          v-model="filterHistory.filter"
           >Все</BaseInput
         >
         <BaseInput
@@ -32,6 +38,7 @@ const props = defineProps<{
           name="filter"
           value="incomes"
           variant-action="radio"
+          v-model="filterHistory.filter"
           >Доход</BaseInput
         >
         <BaseInput
@@ -40,6 +47,7 @@ const props = defineProps<{
           name="filter"
           value="expenses"
           variant-action="radio"
+          v-model="filterHistory.filter"
           >Расход</BaseInput
         >
       </div>
@@ -47,10 +55,14 @@ const props = defineProps<{
     <ul class="budget-history__list list-reset" data-history-list>
       <li
         class="budget-history__item"
+        v-if="transactions?.length !== 0"
         v-for="item of transactions"
         :key="item.id"
       >
         <BudgetItem :transaction="item" />
+      </li>
+      <li v-else>
+        <p class="budget__descr">История операций пуста</p>
       </li>
     </ul>
   </div>
@@ -138,5 +150,12 @@ const props = defineProps<{
   padding: 10px;
   border-radius: 8px;
   background: var(--main-color);
+}
+
+.budget__descr {
+  margin: 0;
+  text-align: center;
+  color: var(--secondary-text-color);
+  font-size: 1.1rem;
 }
 </style>

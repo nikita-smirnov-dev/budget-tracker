@@ -1,22 +1,47 @@
 <script setup lang="ts">
+import type { TransactionType } from '@/types/budgetTypes';
 import BaseButton from '@/UI/BaseButton.vue';
 import BaseInput from '@/UI/BaseInput.vue';
+import { ref } from 'vue';
+
+const emit = defineEmits(['add-transaction']);
+
+const budgetObj = ref({
+  title: '',
+  amount: null as number | null,
+  type: 'income' as TransactionType,
+});
+
+const sendForm = () => {
+  const id = Date.now().toString();
+  const newTransaction = {
+    ...budgetObj.value,
+    id,
+    amount: budgetObj.value.amount || 0,
+  };
+  emit('add-transaction', newTransaction);
+  budgetObj.value = {
+    title: '',
+    amount: null,
+    type: 'income',
+  };
+};
 </script>
 
 <template>
-  <form class="budget-form card" data-form action="#" novalidate>
+  <form class="budget-form card" @submit.prevent="sendForm">
     <h2 class="budget-form__title">Введите транзакцию</h2>
     <BaseInput
       class="budget-form__field"
       type="text"
       placeholder="Введите название"
-      data-input-name
+      v-model="budgetObj.title"
     />
     <BaseInput
       class="budget-form__field"
       type="number"
       placeholder="Введите сумму"
-      data-input-sum
+      v-model.number="budgetObj.amount"
     />
     <p id="group-type" class="budget-form__text">Тип транзакции:</p>
     <div class="budget-form__type" aria-labelledby="group-type">
@@ -27,6 +52,7 @@ import BaseInput from '@/UI/BaseInput.vue';
         value="income"
         is-checked
         variant-action="radio"
+        v-model="budgetObj.type"
         >Доход</BaseInput
       >
       <BaseInput
@@ -35,6 +61,7 @@ import BaseInput from '@/UI/BaseInput.vue';
         name="type"
         value="expense"
         variant-action="radio"
+        v-model="budgetObj.type"
         >Расход</BaseInput
       >
     </div>

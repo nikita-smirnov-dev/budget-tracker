@@ -1,9 +1,13 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const props = defineProps({
+  total: Number,
+});
+</script>
 
 <template>
   <div class="budget-balance card">
     <h1 class="budget-balance__title">Ваш Баланс</h1>
-    <span class="budget-balance__info" data-balance>0 рублей</span>
+    <span class="budget-balance__info" data-balance>{{ total }} рублей</span>
   </div>
 </template>
 

@@ -2,7 +2,13 @@ export type TransactionType = 'income' | 'expense';
 
 export interface Budget {
   id?: string;
-  title?: string;
-  amount?: number;
-  type?: TransactionType;
+  title: string;
+  amount: number;
+  type: TransactionType;
+}
+
+export type FilterType = 'all' | 'income' | 'expense';
+
+export interface FilterHistory {
+  filter: FilterType;
 }

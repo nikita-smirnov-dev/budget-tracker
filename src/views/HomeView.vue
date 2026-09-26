@@ -3,29 +3,33 @@ import BudgetBalance from '@/components/BudgetBalance.vue';
 import BudgetForm from '@/components/BudgetForm.vue';
 import BudgetHistory from '@/components/BudgetHistory.vue';
 import type { Budget } from '@/types/budgetTypes';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
-const transactions = ref<Budget[]>([
-  {
-    id: Date.now().toString(),
-    title: 'Products',
-    amount: 5000,
-    type: 'income',
-  },
-  {
-    id: Date.now().toString(),
-    title: 'Products',
-    amount: 5000,
-    type: 'expense',
-  },
-]);
+const transactions = ref<Budget[]>([]);
+
+const updateTransactions = (transaction: Budget) => {
+  transactions.value.push(transaction);
+};
+
+const totalBalance = computed(() => {
+  const total = transactions.value.reduce((acc, item) => {
+    if (item.type === 'income') {
+      acc += item.amount;
+    }
+    if (item.type === 'expense') {
+      acc -= item.amount;
+    }
+    return acc;
+  }, 0);
+  return total;
+});
 </script>
 
 <template>
   <section class="container budget">
-    <BudgetBalance />
+    <BudgetBalance :total="totalBalance" />
     <BudgetHistory :transactions="transactions" />
-    <BudgetForm />
+    <BudgetForm @add-transaction="updateTransactions" />
   </section>
 </template>
 

@@ -7,14 +7,20 @@ const props = withDefaults(
     value?: string;
     name?: string;
     inputClass?: string;
+    modelValue: string | number | null;
     variantAction?: 'base-input' | 'radio';
   }>(),
   {
     isChecked: false,
     inputClass: '',
     variantAction: 'base-input',
+    modelValue: '',
   },
 );
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: string | number): void;
+}>();
 </script>
 
 <template>
@@ -28,9 +34,17 @@ const props = withDefaults(
       ]"
       :type="type"
       :placeholder="placeholder"
-      :value="value"
+      :value="type === 'radio' ? value : modelValue"
       :name="name"
-      :checked="isChecked"
+      :checked="type === 'radio' ? modelValue === value : isChecked"
+      @input="
+        $emit(
+          'update:modelValue',
+          type === 'radio'
+            ? ($event.target as HTMLInputElement).value
+            : ($event.target as HTMLInputElement).value,
+        )
+      "
     />
     <slot></slot>
   </label>
