@@ -1,7 +1,16 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const props = withDefaults(
+  defineProps<{
+    disabled?: boolean;
+  }>(),
+  {
+    disabled: false,
+  },
+);
+</script>
 
 <template>
-  <button class="base-button btn-reset">
+  <button class="base-button btn-reset" :disabled="props.disabled">
     <slot />
   </button>
 </template>
@@ -22,5 +31,11 @@
 }
 .base-button:active {
   background: var(--active-color);
+}
+
+.base-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #555555;
 }
 </style>

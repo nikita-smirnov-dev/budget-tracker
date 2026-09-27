@@ -2,9 +2,10 @@
 import type { TransactionType } from '@/types/budgetTypes';
 import BaseButton from '@/UI/BaseButton.vue';
 import BaseInput from '@/UI/BaseInput.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 const emit = defineEmits(['add-transaction']);
+const isSubmitted = ref(false);
 
 const budgetObj = ref({
   title: '',
@@ -13,6 +14,9 @@ const budgetObj = ref({
 });
 
 const sendForm = () => {
+  isSubmitted.value = true;
+  if (isFormInvalid.value) return;
+
   const id = Date.now().toString();
   const newTransaction = {
     ...budgetObj.value,
@@ -25,7 +29,20 @@ const sendForm = () => {
     amount: null,
     type: 'income',
   };
+
+  isSubmitted.value = false;
 };
+
+const isFormInvalid = computed(() => {
+  const inputTitle = budgetObj.value.title.trim();
+  const inputAmount = budgetObj.value.amount;
+
+  if (inputAmount === null || inputTitle === '' || inputAmount <= 0) {
+    return true;
+  } else {
+    return false;
+  }
+});
 </script>
 
 <template>
@@ -36,12 +53,22 @@ const sendForm = () => {
       type="text"
       placeholder="Введите название"
       v-model="budgetObj.title"
+      :is-error="
+        isSubmitted && budgetObj.title.trim() === ''
+          ? 'Введите название транзакции'
+          : ''
+      "
     />
     <BaseInput
       class="budget-form__field"
       type="number"
       placeholder="Введите сумму"
       v-model.number="budgetObj.amount"
+      :is-error="
+        isSubmitted && (budgetObj.amount === null || budgetObj.amount <= 0)
+          ? 'Сумма должна быть больше нуля'
+          : ''
+      "
     />
     <p id="group-type" class="budget-form__text">Тип транзакции:</p>
     <div class="budget-form__type" aria-labelledby="group-type">
@@ -65,7 +92,7 @@ const sendForm = () => {
         >Расход</BaseInput
       >
     </div>
-    <BaseButton class="budget-form__btn" type="submit"
+    <BaseButton class="budget-form__btn" type="submit" :disabled="isFormInvalid"
       >Добавить транзакцию</BaseButton
     >
   </form>

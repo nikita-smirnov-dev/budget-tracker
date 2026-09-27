@@ -9,6 +9,7 @@ const props = withDefaults(
     inputClass?: string;
     modelValue: string | number | null;
     variantAction?: 'base-input' | 'radio';
+    isError?: string;
   }>(),
   {
     isChecked: false,
@@ -25,28 +26,31 @@ const emit = defineEmits<{
 
 <template>
   <label>
-    <input
-      :class="[
-        'input-reset',
-        inputClass,
-        { 'base-input': variantAction === 'base-input' },
-        { 'input--radio': variantAction === 'radio' },
-      ]"
-      :type="type"
-      :placeholder="placeholder"
-      :value="type === 'radio' ? value : modelValue"
-      :name="name"
-      :checked="type === 'radio' ? modelValue === value : isChecked"
-      @input="
-        $emit(
-          'update:modelValue',
-          type === 'radio'
-            ? ($event.target as HTMLInputElement).value
-            : ($event.target as HTMLInputElement).value,
-        )
-      "
-    />
-    <slot></slot>
+    <div :class="{ 'input-error': isError }">
+      <input
+        :class="[
+          'input-reset',
+          inputClass,
+          { 'base-input': variantAction === 'base-input' },
+          { 'input--radio': variantAction === 'radio' },
+        ]"
+        :type="type"
+        :placeholder="placeholder"
+        :value="type === 'radio' ? value : modelValue"
+        :name="name"
+        :checked="type === 'radio' ? modelValue === value : isChecked"
+        @input="
+          $emit(
+            'update:modelValue',
+            type === 'radio'
+              ? ($event.target as HTMLInputElement).value
+              : ($event.target as HTMLInputElement).value,
+          )
+        "
+      />
+      <slot></slot>
+    </div>
+    <span v-if="isError" class="error-text">{{ isError }}</span>
   </label>
 </template>
 
@@ -64,6 +68,7 @@ const emit = defineEmits<{
 
 .base-input {
   width: 100%;
+  border: 1px solid transparent;
   padding: 12px 16px;
   border-radius: 8px;
   background-color: var(--main-color);
@@ -89,5 +94,24 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.input-error .base-input {
+  border-color: var(--color-error);
+}
+
+.input-error:hover {
+  border-color: var(--color-error);
+}
+
+.input-error:hover :deep(svg) {
+  color: var(--color-error);
+}
+
+.error-text {
+  display: block;
+  margin-top: 4px; /* Небольшой отступ сверху */
+  font-size: 0.8rem;
+  color: var(--color-error); /* Делает текст ошибки чуть помельче */
 }
 </style>

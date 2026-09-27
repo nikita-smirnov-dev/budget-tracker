@@ -23,7 +23,7 @@ const filteredTransactions = computed(() => {
     return props.transactions?.filter((item) => item.type === 'expense') || [];
   } else {
     const _: never = filterHistory.value.filter;
-    throw new Error();
+    throw new Error(`Unexpected value: ${_}`);
   }
 });
 </script>
