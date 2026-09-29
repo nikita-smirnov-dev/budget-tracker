@@ -64,6 +64,7 @@ const isFormInvalid = computed(() => {
       type="number"
       placeholder="Введите сумму"
       v-model.number="budgetObj.amount"
+      step="0.01"
       :is-error="
         isSubmitted && (budgetObj.amount === null || budgetObj.amount <= 0)
           ? 'Сумма должна быть больше нуля'

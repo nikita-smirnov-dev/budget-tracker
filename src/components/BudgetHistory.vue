@@ -90,6 +90,7 @@ const filteredTransactions = computed(() => {
 <style scoped>
 .budget-history {
   grid-row: span 2;
+  height: calc(100vh - 290px);
 }
 
 .budget-history__title {
@@ -160,6 +161,25 @@ const filteredTransactions = computed(() => {
   flex-direction: column;
   gap: 20px;
   flex-grow: 1;
+  overflow-y: scroll;
+  padding-right: 10px;
+}
+
+.budget-history__list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.budget-history__list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.budget-history__list::-webkit-scrollbar-thumb {
+  background-color: #444444;
+  border-radius: 10px;
+}
+
+.budget-history__list::-webkit-scrollbar-thumb:hover {
+  background-color: #555555;
 }
 
 .budget-history__item {

@@ -7,7 +7,15 @@ const props = defineProps({
 <template>
   <div class="budget-balance card">
     <h1 class="budget-balance__title">Ваш Баланс</h1>
-    <span class="budget-balance__info" data-balance>{{ total }} рублей</span>
+    <span class="budget-balance__info" data-balance
+      >{{
+        total?.toLocaleString('ru-RU', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })
+      }}
+      рублей</span
+    >
   </div>
 </template>
 

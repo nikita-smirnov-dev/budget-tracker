@@ -7,15 +7,17 @@ const props = withDefaults(
     value?: string;
     name?: string;
     inputClass?: string;
-    modelValue: string | number | null;
+    modelValue?: string | number | null;
     variantAction?: 'base-input' | 'radio';
     isError?: string;
+    step?: string;
   }>(),
   {
     isChecked: false,
     inputClass: '',
     variantAction: 'base-input',
     modelValue: '',
+    step: '',
   },
 );
 
@@ -35,6 +37,7 @@ const emit = defineEmits<{
           { 'input--radio': variantAction === 'radio' },
         ]"
         :type="type"
+        :step="step"
         :placeholder="placeholder"
         :value="type === 'radio' ? value : modelValue"
         :name="name"
@@ -110,8 +113,8 @@ input::-webkit-inner-spin-button {
 
 .error-text {
   display: block;
-  margin-top: 4px; /* Небольшой отступ сверху */
+  margin-top: 4px;
   font-size: 0.8rem;
-  color: var(--color-error); /* Делает текст ошибки чуть помельче */
+  color: var(--color-error);
 }
 </style>
