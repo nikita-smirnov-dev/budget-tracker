@@ -2,9 +2,14 @@
 import type { TransactionType } from '@/types/budgetTypes';
 import BaseButton from '@/UI/BaseButton.vue';
 import BaseInput from '@/UI/BaseInput.vue';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 const emit = defineEmits(['add-transaction']);
+
+const props = defineProps<{
+  selectedTitle?: string;
+}>();
+
 const isSubmitted = ref(false);
 
 const budgetObj = ref({
@@ -15,6 +20,7 @@ const budgetObj = ref({
 
 const sendForm = () => {
   isSubmitted.value = true;
+
   if (isFormInvalid.value) return;
 
   const id = Date.now().toString();
@@ -43,6 +49,15 @@ const isFormInvalid = computed(() => {
     return false;
   }
 });
+
+watch(
+  () => props.selectedTitle,
+  (newTitle) => {
+    if (newTitle) {
+      budgetObj.value.title = newTitle;
+    }
+  },
+);
 </script>
 
 <template>

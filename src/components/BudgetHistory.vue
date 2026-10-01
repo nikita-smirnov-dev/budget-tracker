@@ -70,7 +70,6 @@ const filteredTransactions = computed(() => {
     <ul
       v-if="filteredTransactions?.length > 0"
       class="budget-history__list list-reset"
-      data-history-list
     >
       <li
         class="budget-history__item"

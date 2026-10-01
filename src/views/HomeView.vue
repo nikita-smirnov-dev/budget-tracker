@@ -6,6 +6,8 @@ import FrequentTransactions from '@/components/FrequentTransactions.vue';
 import type { Budget } from '@/types/budgetTypes';
 import { computed, ref, watch } from 'vue';
 
+const formTitle = ref('');
+
 const transactions = ref<Budget[]>(
   JSON.parse(localStorage.getItem('my-budget-list') || '[]'),
 );
@@ -31,6 +33,10 @@ const deleteTransaction = (id: string) => {
   transactions.value = transactions.value.filter((item) => item.id !== id);
 };
 
+const handleSelectTag = (title: string) => {
+  formTitle.value = title;
+};
+
 watch(
   transactions,
   (newValues) => {
@@ -44,8 +50,11 @@ watch(
   <section class="container budget">
     <div class="budget__left">
       <BudgetBalance :total="totalBalance" />
-      <FrequentTransactions />
-      <BudgetForm @add-transaction="updateTransactions" />
+      <FrequentTransactions @select-tag="handleSelectTag" />
+      <BudgetForm
+        @add-transaction="updateTransactions"
+        :selected-title="formTitle"
+      />
     </div>
     <BudgetHistory
       :transactions="transactions"
