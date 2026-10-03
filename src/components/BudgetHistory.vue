@@ -1,61 +1,23 @@
 <script setup lang="ts">
 import BaseInput from '@/UI/BaseInput.vue';
 import BudgetItem from './BudgetItem.vue';
-import type { Budget, FilterHistory } from '@/types/budgetTypes.ts';
-import { computed, ref } from 'vue';
+import type { Budget } from '@/types/budgetTypes.ts';
+import { toRef } from 'vue';
+import { formatGroupDate } from '@/utils/formatGroupDate.ts';
+import { useTransactionFilter } from '@/composables/useTransactionFilter.ts';
+import { useTransactionGroups } from '@/composables/useTransactionGroups.ts';
 
 const props = defineProps<{
   transactions: Budget[] | null;
 }>();
 
+const transactionsRef = toRef(props, 'transactions');
 const emit = defineEmits(['delete-transaction']);
 
-const filterHistory = ref<FilterHistory>({
-  filter: 'all',
-});
+const { filterHistory, filteredTransactions } =
+  useTransactionFilter(transactionsRef);
 
-const filteredTransactions = computed(() => {
-  if (filterHistory.value.filter === 'all') {
-    return props.transactions || [];
-  } else if (filterHistory.value.filter === 'incomes') {
-    return props.transactions?.filter((item) => item.type === 'income') || [];
-  } else if (filterHistory.value.filter === 'expenses') {
-    return props.transactions?.filter((item) => item.type === 'expense') || [];
-  } else {
-    const _: never = filterHistory.value.filter;
-    throw new Error(`Unexpected value: ${_}`);
-  }
-});
-
-const formatGroupDate = (str: string | number) => {
-  const today = new Date().setHours(0, 0, 0, 0);
-  const yesterday = today - 24 * 60 * 60 * 1000;
-
-  if (Number(str) === today) {
-    return 'Сегодня';
-  } else if (Number(str) === yesterday) {
-    return 'Вчера';
-  } else {
-    return new Date(Number(str)).toLocaleDateString('ru-RU', {
-      day: 'numeric',
-      month: 'long',
-    });
-  }
-};
-
-const newTransactions = computed(() => {
-  const groupedTransactions = filteredTransactions.value.reduce(
-    (acc, item) => {
-      if (!acc[item.createdAt]) {
-        acc[item.createdAt] = [];
-      }
-      acc[item.createdAt].push(item);
-      return acc;
-    },
-    {} as Record<number, Budget[]>,
-  );
-  return groupedTransactions;
-});
+const { newTransactions } = useTransactionGroups(filteredTransactions);
 </script>
 
 <template>
