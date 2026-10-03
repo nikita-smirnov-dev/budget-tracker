@@ -24,9 +24,11 @@ const sendForm = () => {
   if (isFormInvalid.value) return;
 
   const id = Date.now().toString();
+  const createdAt = new Date().setHours(0, 0, 0, 0);
   const newTransaction = {
     ...budgetObj.value,
     id,
+    createdAt,
     amount: budgetObj.value.amount || 0,
   };
   emit('add-transaction', newTransaction);

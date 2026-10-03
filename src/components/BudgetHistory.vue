@@ -26,6 +26,36 @@ const filteredTransactions = computed(() => {
     throw new Error(`Unexpected value: ${_}`);
   }
 });
+
+const formatGroupDate = (str: string | number) => {
+  const today = new Date().setHours(0, 0, 0, 0);
+  const yesterday = today - 24 * 60 * 60 * 1000;
+
+  if (Number(str) === today) {
+    return 'Сегодня';
+  } else if (Number(str) === yesterday) {
+    return 'Вчера';
+  } else {
+    return new Date(Number(str)).toLocaleDateString('ru-RU', {
+      day: 'numeric',
+      month: 'long',
+    });
+  }
+};
+
+const newTransactions = computed(() => {
+  const groupedTransactions = filteredTransactions.value.reduce(
+    (acc, item) => {
+      if (!acc[item.createdAt]) {
+        acc[item.createdAt] = [];
+      }
+      acc[item.createdAt].push(item);
+      return acc;
+    },
+    {} as Record<number, Budget[]>,
+  );
+  return groupedTransactions;
+});
 </script>
 
 <template>
@@ -69,17 +99,27 @@ const filteredTransactions = computed(() => {
     </div>
     <ul
       v-if="filteredTransactions?.length > 0"
-      class="budget-history__list list-reset"
+      class="budget-history__date-list list-reset"
     >
       <li
-        class="budget-history__item"
-        v-for="item of filteredTransactions"
-        :key="item.id"
+        class="budget-history__date-item"
+        v-for="(dayTransactions, dateKey) in newTransactions"
       >
-        <BudgetItem
-          :transaction="item"
-          @delete="$emit('delete-transaction', $event)"
-        />
+        <span class="budget-history__date-text">{{
+          formatGroupDate(dateKey)
+        }}</span>
+        <ul class="budget-history__list list-reset">
+          <li
+            class="budget-history__item"
+            v-for="item of dayTransactions"
+            :key="item.id"
+          >
+            <BudgetItem
+              :transaction="item"
+              @delete="$emit('delete-transaction', $event)"
+            />
+          </li>
+        </ul>
       </li>
     </ul>
     <p v-else class="budget__descr">История операций пуста</p>
@@ -153,6 +193,21 @@ const filteredTransactions = computed(() => {
   color: #f3f4f6;
   background: var(--main-color);
   transition: background 0.3s ease-in-out;
+}
+
+.budget-history__date-item {
+  padding: 10px;
+  border-radius: 8px;
+  background: var(--surface-color);
+}
+
+.budget-history__date-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  letter-spacing: 0.8px;
 }
 
 .budget-history__list {
