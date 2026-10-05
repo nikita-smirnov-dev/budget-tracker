@@ -1,12 +1,14 @@
 <script setup lang="ts">
+import { computed, ref, watch } from 'vue';
+
 import BudgetBalance from '@/components/BudgetBalance.vue';
 import BudgetForm from '@/components/BudgetForm.vue';
 import BudgetHistory from '@/components/BudgetHistory.vue';
 import CurrencyPicker from '@/components/CurrencyPicker.vue';
 import FrequentTransactions from '@/components/FrequentTransactions.vue';
+
 import type { Budget } from '@/types/budgetTypes';
 import type { CurrencyType } from '@/types/currencyTypes';
-import { computed, ref, watch } from 'vue';
 
 const formTitle = ref('');
 const currentCurrency = ref<CurrencyType>(
@@ -75,6 +77,7 @@ watch(currentCurrency, (newCurrency) => {
     </div>
     <BudgetHistory
       :transactions="transactions"
+      :currency="currentCurrency"
       @delete-transaction="deleteTransaction"
     />
   </section>

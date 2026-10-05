@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import BaseInputRadio from '@/UI/BaseInputRadio.vue';
+import BaseRadioGroup from '@/UI/BaseRadioGroup.vue';
+
 import type { CurrencyType } from '@/types/currencyTypes';
-import BaseInput from '@/UI/BaseInput.vue';
 
 const emit = defineEmits<{
   (e: 'change-currency', value: CurrencyType): void;
@@ -32,40 +34,37 @@ function getCurrencyChar(currency: CurrencyType): string | never {
 
 <template>
   <div class="currency card">
-    <h2 class="currency-title">Выберите валюту</h2>
-    <div class="budget-form__type" aria-labelledby="group-type">
-      <BaseInput
-        class="budget-form__type-radio"
+    <h2 id="currency-type" class="currency-title">Выберите валюту</h2>
+    <BaseRadioGroup
+      class="currency-title__type"
+      aria-labelledby="currency-type"
+    >
+      <BaseInputRadio
         type="radio"
-        name="type"
+        name="currency"
         value="RUB"
         is-checked
         :model-value="props.currency"
         @update:model-value="emit('change-currency', $event as CurrencyType)"
-        variant-action="radio"
-        >{{ getCurrencyChar('RUB') }}</BaseInput
+        >{{ getCurrencyChar('RUB') }}</BaseInputRadio
       >
-      <BaseInput
-        class="budget-form__type-radio"
+      <BaseInputRadio
         type="radio"
-        name="type"
+        name="currency"
         value="USD"
         :model-value="props.currency"
         @update:model-value="emit('change-currency', $event as CurrencyType)"
-        variant-action="radio"
-        >{{ getCurrencyChar('USD') }}</BaseInput
+        >{{ getCurrencyChar('USD') }}</BaseInputRadio
       >
-      <BaseInput
-        class="budget-form__type-radio"
+      <BaseInputRadio
         type="radio"
-        name="type"
+        name="currency"
         value="EUR"
         :model-value="props.currency"
         @update:model-value="emit('change-currency', $event as CurrencyType)"
-        variant-action="radio"
-        >{{ getCurrencyChar('EUR') }}</BaseInput
+        >{{ getCurrencyChar('EUR') }}</BaseInputRadio
       >
-    </div>
+    </BaseRadioGroup>
   </div>
 </template>
 
@@ -74,34 +73,7 @@ function getCurrencyChar(currency: CurrencyType): string | never {
   margin: 0;
 }
 
-.budget-form__type {
-  display: grid;
+.currency-title__type {
   grid-template-columns: repeat(3, 1fr);
-  margin-bottom: 20px;
-  background: var(--surface-color);
-}
-
-.budget-form__type-radio {
-  padding: 5px;
-  width: 100%;
-  text-align: center;
-  background: transparent;
-  cursor: pointer;
-  color: var(--secondary-text-color);
-  transition: color 0.3s ease-in-out;
-}
-
-.budget-form__type-radio:has(input[type='radio']:focus-visible) {
-  box-shadow: 0 0 0 2px var(--accent-color);
-}
-
-.budget-form__type-radio:not(:has(input[type='radio']:checked)):hover {
-  color: #f3f4f6;
-}
-
-.budget-form__type-radio:has(input[type='radio']:checked) {
-  color: #f3f4f6;
-  background: var(--main-color);
-  transition: background 0.3s ease-in-out;
 }
 </style>

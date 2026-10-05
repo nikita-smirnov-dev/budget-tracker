@@ -12,7 +12,6 @@ const emit = defineEmits(['delete']);
 const props = withDefaults(
   defineProps<{
     transaction: Budget;
-    total: number;
     currency: CurrencyType;
   }>(),
   {

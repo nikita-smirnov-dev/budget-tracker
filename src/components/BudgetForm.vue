@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import type { TransactionType } from '@/types/budgetTypes';
+import { computed, ref, watch } from 'vue';
+
 import BaseButton from '@/UI/BaseButton.vue';
 import BaseInput from '@/UI/BaseInput.vue';
-import { computed, ref, watch } from 'vue';
+import BaseInputRadio from '@/UI/BaseInputRadio.vue';
+import BaseRadioGroup from '@/UI/BaseRadioGroup.vue';
+
+import type { TransactionType } from '@/types/budgetTypes';
 
 const emit = defineEmits(['add-transaction']);
 
@@ -89,27 +93,24 @@ watch(
       "
     />
     <p id="group-type" class="budget-form__text">Тип транзакции:</p>
-    <div class="budget-form__type" aria-labelledby="group-type">
-      <BaseInput
-        class="budget-form__type-radio"
+
+    <BaseRadioGroup class="budget-form__type" aria-labelledby="group-type">
+      <BaseInputRadio
         type="radio"
         name="type"
         value="income"
         is-checked
-        variant-action="radio"
         v-model="budgetObj.type"
-        >Доход</BaseInput
+        >Доход</BaseInputRadio
       >
-      <BaseInput
-        class="budget-form__type-radio"
+      <BaseInputRadio
         type="radio"
         name="type"
         value="expense"
-        variant-action="radio"
         v-model="budgetObj.type"
-        >Расход</BaseInput
+        >Расход</BaseInputRadio
       >
-    </div>
+    </BaseRadioGroup>
     <BaseButton class="budget-form__btn" type="submit" :disabled="isFormInvalid"
       >Добавить транзакцию</BaseButton
     >
@@ -135,33 +136,6 @@ watch(
 }
 
 .budget-form__type {
-  display: grid;
   grid-template-columns: repeat(2, 1fr);
-  margin-bottom: 20px;
-  background: var(--surface-color);
-}
-
-.budget-form__type-radio {
-  padding: 5px;
-  width: 100%;
-  text-align: center;
-  background: transparent;
-  cursor: pointer;
-  color: var(--secondary-text-color);
-  transition: color 0.3s ease-in-out;
-}
-
-.budget-form__type-radio:has(input[type='radio']:focus-visible) {
-  box-shadow: 0 0 0 2px var(--accent-color);
-}
-
-.budget-form__type-radio:not(:has(input[type='radio']:checked)):hover {
-  color: #f3f4f6;
-}
-
-.budget-form__type-radio:has(input[type='radio']:checked) {
-  color: #f3f4f6;
-  background: var(--main-color);
-  transition: background 0.3s ease-in-out;
 }
 </style>

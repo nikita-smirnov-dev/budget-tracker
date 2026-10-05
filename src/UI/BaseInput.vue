@@ -1,21 +1,17 @@
 <script setup lang="ts">
 const props = withDefaults(
   defineProps<{
-    isChecked?: boolean;
     placeholder?: string;
     type?: string;
     value?: string;
     name?: string;
     inputClass?: string;
     modelValue?: string | number | null;
-    variantAction?: 'base-input' | 'radio';
     isError?: string;
     step?: string;
   }>(),
   {
-    isChecked: false,
     inputClass: '',
-    variantAction: 'base-input',
     modelValue: '',
     step: '',
   },
@@ -30,25 +26,14 @@ const emit = defineEmits<{
   <label>
     <div :class="{ 'input-error': isError }">
       <input
-        :class="[
-          'input-reset',
-          inputClass,
-          { 'base-input': variantAction === 'base-input' },
-          { 'input--radio': variantAction === 'radio' },
-        ]"
+        :class="['input-reset', inputClass, 'base-input']"
         :type="type"
         :step="step"
         :placeholder="placeholder"
-        :value="type === 'radio' ? value : modelValue"
+        :value="modelValue"
         :name="name"
-        :checked="type === 'radio' ? modelValue === value : isChecked"
         @input="
-          $emit(
-            'update:modelValue',
-            type === 'radio'
-              ? ($event.target as HTMLInputElement).value
-              : ($event.target as HTMLInputElement).value,
-          )
+          $emit('update:modelValue', ($event.target as HTMLInputElement).value)
         "
       />
       <slot></slot>
@@ -58,17 +43,6 @@ const emit = defineEmits<{
 </template>
 
 <style scoped>
-.input-reset {
-  border: none;
-  outline: none;
-  background: transparent;
-  padding: 0;
-  margin: 0;
-  font: inherit;
-  color: inherit;
-  outline: none;
-}
-
 .base-input {
   width: 100%;
   border: 1px solid transparent;
@@ -79,13 +53,6 @@ const emit = defineEmits<{
 
 .base-input::placeholder {
   color: var(--secondary-text-color);
-}
-
-.input--radio {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
 }
 
 input::-ms-clear,
