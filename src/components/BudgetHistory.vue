@@ -157,6 +157,31 @@ const { newTransactions } = useTransactionGroups(filteredTransactions);
   transition: background 0.3s ease-in-out;
 }
 
+.budget-history__date-list {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 20px;
+  overflow-y: auto;
+  padding: 0 10px;
+}
+
+.budget-history__date-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.budget-history__date-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.budget-history__date-list::-webkit-scrollbar-thumb {
+  background-color: #444444;
+  border-radius: 10px;
+}
+
+.budget-history__date-list::-webkit-scrollbar-thumb:hover {
+  background-color: #555555;
+}
+
 .budget-history__date-item {
   padding: 10px;
   border-radius: 8px;
@@ -177,25 +202,6 @@ const { newTransactions } = useTransactionGroups(filteredTransactions);
   flex-direction: column;
   gap: 20px;
   flex-grow: 1;
-  overflow-y: scroll;
-  padding-right: 10px;
-}
-
-.budget-history__list::-webkit-scrollbar {
-  width: 6px;
-}
-
-.budget-history__list::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.budget-history__list::-webkit-scrollbar-thumb {
-  background-color: #444444;
-  border-radius: 10px;
-}
-
-.budget-history__list::-webkit-scrollbar-thumb:hover {
-  background-color: #555555;
 }
 
 .budget-history__item {

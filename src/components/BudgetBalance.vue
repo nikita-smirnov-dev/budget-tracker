@@ -1,21 +1,24 @@
 <script setup lang="ts">
-const props = defineProps({
-  total: Number,
-});
+import type { CurrencyType } from '@/types/currencyTypes';
+import BaseAmount from '@/UI/BaseAmount.vue';
+
+const props = withDefaults(
+  defineProps<{
+    total: number;
+    currency: CurrencyType;
+  }>(),
+  {
+    currency: 'RUB',
+  },
+);
 </script>
 
 <template>
   <div class="budget-balance card">
     <h1 class="budget-balance__title">Ваш Баланс</h1>
-    <span class="budget-balance__info" data-balance
-      >{{
-        total?.toLocaleString('ru-RU', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })
-      }}
-      рублей</span
-    >
+    <div class="budget-balance__info" data-balance>
+      <BaseAmount :value="total" :currency="currency" />
+    </div>
   </div>
 </template>
 
@@ -25,7 +28,6 @@ const props = defineProps({
 }
 
 .budget-balance__info {
-  display: inline-block;
   margin-bottom: 10px;
   font-size: 1.4rem;
   font-weight: bold;

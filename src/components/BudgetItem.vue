@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { Budget } from '@/types/budgetTypes';
+import type { CurrencyType } from '@/types/currencyTypes';
+import BaseAmount from '@/UI/BaseAmount.vue';
 import { AkTrashCan } from '@kalimahapps/vue-icons';
 
 import { AkArrowUpRight } from '@kalimahapps/vue-icons';
@@ -7,9 +9,16 @@ import { AkArrowDownLeft } from '@kalimahapps/vue-icons';
 
 const emit = defineEmits(['delete']);
 
-const props = defineProps<{
-  transaction: Budget;
-}>();
+const props = withDefaults(
+  defineProps<{
+    transaction: Budget;
+    total: number;
+    currency: CurrencyType;
+  }>(),
+  {
+    currency: 'RUB',
+  },
+);
 </script>
 
 <template>
@@ -23,7 +32,9 @@ const props = defineProps<{
     <span class="budget-item__name">{{ transaction.title }}</span>
   </div>
   <div class="budget-item__right">
-    <span class="budget-item__sum">{{ transaction.amount }}</span>
+    <span class="budget-item__sum">
+      <BaseAmount :value="transaction.amount" :currency="currency" />
+    </span>
     <button
       class="budget-item__delete btn-reset"
       aria-label="Удалить"
