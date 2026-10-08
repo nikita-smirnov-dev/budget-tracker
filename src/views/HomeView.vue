@@ -63,8 +63,15 @@ watch(currentCurrency, (newCurrency) => {
 
 <template>
   <section class="container budget">
-    <div class="budget__left">
+    <div class="budget__column">
       <BudgetBalance :total="totalBalance" :currency="currentCurrency" />
+      <BudgetHistory
+        :transactions="transactions"
+        :currency="currentCurrency"
+        @delete-transaction="deleteTransaction"
+      />
+    </div>
+    <div class="budget__column">
       <CurrencyPicker
         :currency="currentCurrency"
         @change-currency="handleCurrencyChange"
@@ -75,11 +82,6 @@ watch(currentCurrency, (newCurrency) => {
         :selected-title="formTitle"
       />
     </div>
-    <BudgetHistory
-      :transactions="transactions"
-      :currency="currentCurrency"
-      @delete-transaction="deleteTransaction"
-    />
   </section>
 </template>
 
@@ -89,10 +91,11 @@ watch(currentCurrency, (newCurrency) => {
   grid-template-columns: repeat(2, 1fr);
   align-items: start;
   gap: 16px;
-  padding: 40px 0;
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 
-.budget__left {
+.budget__column {
   display: flex;
   flex-direction: column;
   gap: 16px;

@@ -40,7 +40,6 @@ const { newTransactions } = useTransactionGroups(filteredTransactions);
         aria-labelledby="group-filter"
       >
         <BaseInputRadio
-          class="budget-history__actions-radio"
           type="radio"
           name="filter"
           value="all"
@@ -50,7 +49,6 @@ const { newTransactions } = useTransactionGroups(filteredTransactions);
           >Все</BaseInputRadio
         >
         <BaseInputRadio
-          class="budget-history__actions-radio"
           type="radio"
           name="filter"
           value="incomes"
@@ -59,7 +57,6 @@ const { newTransactions } = useTransactionGroups(filteredTransactions);
           >Доход</BaseInputRadio
         >
         <BaseInputRadio
-          class="budget-history__actions-radio"
           type="radio"
           name="filter"
           value="expenses"
@@ -101,8 +98,8 @@ const { newTransactions } = useTransactionGroups(filteredTransactions);
 
 <style scoped>
 .budget-history {
-  grid-row: span 2;
-  height: calc(100vh - 290px);
+  min-height: 630px;
+  max-height: calc(100vh - 290px);
 }
 
 .budget-history__title {
@@ -114,7 +111,7 @@ const { newTransactions } = useTransactionGroups(filteredTransactions);
   align-items: center;
   justify-content: center;
   gap: 20px;
-  width: 45%;
+  width: fit-content;
   margin-bottom: 20px;
   padding: 5px 8px;
   border-radius: 8px;
@@ -137,7 +134,10 @@ const { newTransactions } = useTransactionGroups(filteredTransactions);
 .budget-history__date-list {
   display: flex;
   flex-direction: column-reverse;
+  justify-content: flex-end;
   gap: 20px;
+  flex-grow: 1;
+  min-height: 0;
   overflow-y: auto;
   padding: 0 10px;
 }

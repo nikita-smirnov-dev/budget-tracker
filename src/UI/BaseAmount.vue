@@ -4,6 +4,7 @@ import { formatBalance } from '@/utils/formatBalance';
 import { MdCurrencyRuble } from '@kalimahapps/vue-icons';
 import { GvUsd } from '@kalimahapps/vue-icons';
 import { BxEuro } from '@kalimahapps/vue-icons';
+import { BsCurrencyYen } from '@kalimahapps/vue-icons';
 
 const props = withDefaults(
   defineProps<{
@@ -27,6 +28,9 @@ const props = withDefaults(
     </template>
     <template v-else-if="props.currency === 'EUR'">
       <BxEuro class="base-amount__svg" />
+    </template>
+    <template v-else-if="props.currency === 'CNY'">
+      <BsCurrencyYen class="base-amount__svg" />
     </template>
   </div>
 </template>

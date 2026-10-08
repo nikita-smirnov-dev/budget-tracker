@@ -27,6 +27,9 @@ function getCurrencyChar(currency: CurrencyType): string | never {
   if (currency === 'EUR') {
     return '€';
   }
+  if (currency === 'CNY') {
+    return '¥';
+  }
   const _: never = currency;
   throw new Error(`Unexpected value: ${_}`);
 }
@@ -44,25 +47,48 @@ function getCurrencyChar(currency: CurrencyType): string | never {
         name="currency"
         value="RUB"
         is-checked
+        aria-label="Российский рубль"
         :model-value="props.currency"
         @update:model-value="emit('change-currency', $event as CurrencyType)"
-        >{{ getCurrencyChar('RUB') }}</BaseInputRadio
+        ><span aria-hidden="true">{{
+          getCurrencyChar('RUB')
+        }}</span></BaseInputRadio
       >
       <BaseInputRadio
         type="radio"
         name="currency"
         value="USD"
+        aria-label="Доллар США"
         :model-value="props.currency"
+        variant-action="base-radio"
         @update:model-value="emit('change-currency', $event as CurrencyType)"
-        >{{ getCurrencyChar('USD') }}</BaseInputRadio
+        ><span aria-hidden="true">{{
+          getCurrencyChar('USD')
+        }}</span></BaseInputRadio
       >
       <BaseInputRadio
         type="radio"
         name="currency"
         value="EUR"
+        aria-label="Евро"
         :model-value="props.currency"
+        variant-action="base-radio"
         @update:model-value="emit('change-currency', $event as CurrencyType)"
-        >{{ getCurrencyChar('EUR') }}</BaseInputRadio
+        ><span aria-hidden="true">{{
+          getCurrencyChar('EUR')
+        }}</span></BaseInputRadio
+      >
+      <BaseInputRadio
+        type="radio"
+        name="currency"
+        value="CNY"
+        aria-label="Китайский юань"
+        :model-value="props.currency"
+        variant-action="base-radio"
+        @update:model-value="emit('change-currency', $event as CurrencyType)"
+        ><span aria-hidden="true">{{
+          getCurrencyChar('CNY')
+        }}</span></BaseInputRadio
       >
     </BaseRadioGroup>
   </div>
@@ -74,6 +100,6 @@ function getCurrencyChar(currency: CurrencyType): string | never {
 }
 
 .currency-title__type {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
 }
 </style>

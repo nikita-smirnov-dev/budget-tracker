@@ -22,7 +22,6 @@ const emit = defineEmits<{
 <template>
   <label
     :class="[
-      'base-radio',
       { 'base-radio--checked': modelValue === value },
       {
         'base-radio': variantAction === 'base-radio',
@@ -60,6 +59,10 @@ const emit = defineEmits<{
   cursor: pointer;
   color: var(--secondary-text-color);
   transition: color 0.3s ease-in-out;
+}
+
+.base-radio:not(:last-child) {
+  border-right: 1px solid var(--card-bg-color);
 }
 
 .base-radio:has(input[type='radio']:focus-visible) {
@@ -109,16 +112,5 @@ const emit = defineEmits<{
   color: #f3f4f6;
   background: var(--main-color);
   transition: background 0.3s ease-in-out;
-}
-
-input::-ms-clear,
-input::-ms-reveal {
-  display: none;
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
 }
 </style>

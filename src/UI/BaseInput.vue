@@ -55,17 +55,6 @@ const emit = defineEmits<{
   color: var(--secondary-text-color);
 }
 
-input::-ms-clear,
-input::-ms-reveal {
-  display: none;
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
 .input-error .base-input {
   border-color: var(--color-error);
 }

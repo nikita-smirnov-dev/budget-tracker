@@ -29,6 +29,12 @@ img {
   max-width: 100%;
 }
 
+:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
 .input-reset {
   border: none;
   outline: none;
@@ -38,6 +44,17 @@ img {
   font: inherit;
   color: inherit;
   outline: none;
+}
+
+input::-ms-clear,
+input::-ms-reveal {
+  display: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .list-reset {
@@ -51,12 +68,6 @@ img {
   border: none;
   cursor: pointer;
   background-color: transparent;
-}
-
-:focus-visible {
-  outline: 2px solid var(--accent-color);
-  outline-offset: 4px;
-  border-radius: 2px;
 }
 
 .container {
