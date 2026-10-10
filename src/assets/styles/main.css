@@ -23,6 +23,7 @@ html {
 a {
   color: inherit;
   text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 img {
@@ -68,6 +69,12 @@ input::-webkit-inner-spin-button {
   border: none;
   cursor: pointer;
   background-color: transparent;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.stop-scroll {
+  overflow: hidden;
+  height: 100vh;
 }
 
 .container {
@@ -94,4 +101,10 @@ input::-webkit-inner-spin-button {
   padding: 20px;
   border-radius: 8px;
   background: var(--card-bg-color);
+}
+
+@media (max-width: 575.98px) {
+  .card {
+    padding: 10px;
+  }
 }

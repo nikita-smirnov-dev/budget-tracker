@@ -32,4 +32,15 @@ const props = withDefaults(
   font-size: 1.4rem;
   font-weight: bold;
 }
+
+@media (max-width: 575.98px) {
+  .budget-balance__title {
+    font-size: 1.6rem;
+  }
+
+  .budget-balance__info {
+    margin-bottom: 10px;
+    font-size: 1.4rem;
+  }
+}
 </style>

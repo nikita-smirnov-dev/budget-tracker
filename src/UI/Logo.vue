@@ -32,4 +32,15 @@
   margin-right: 5px;
   stroke: currentcolor;
 }
+
+@media (max-width: 575.98px) {
+  .header__logo {
+    font-size: 1.2rem;
+  }
+
+  .header__logo svg {
+    width: 30px;
+    height: 30px;
+  }
+}
 </style>

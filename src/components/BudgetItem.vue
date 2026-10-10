@@ -98,4 +98,28 @@ const props = withDefaults(
 .budget-item__delete:active {
   color: #db1212;
 }
+
+@media (max-width: 575.98px) {
+  .budget-item__right,
+  .budget-item__left {
+    gap: 6px;
+  }
+
+  .budget-item__name,
+  .budget-item__sum {
+    font-weight: bold;
+    font-size: 1rem;
+  }
+
+  .budget-item__arrow-up,
+  .budget-item__arrow-down {
+    width: 16px;
+    height: 16px;
+  }
+
+  .budget-item__delete svg {
+    width: 18px;
+    height: 18px;
+  }
+}
 </style>

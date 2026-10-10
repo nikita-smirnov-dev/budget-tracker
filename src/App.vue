@@ -9,5 +9,6 @@ import Footer from '@/components/Footer.vue';
   <main class="main">
     <HomeView />
   </main>
+
   <Footer />
 </template>

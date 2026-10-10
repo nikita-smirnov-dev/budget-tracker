@@ -35,6 +35,7 @@ const { newTransactions } = useTransactionGroups(filteredTransactions);
     <h2 class="budget-history__title">История операций</h2>
     <div class="budget-history__actions" data-action-btns>
       <p id="group-filter" class="budget-history__actions-text">Фильтр:</p>
+
       <BaseRadioGroup
         class="budget-history__actions-wrapper"
         aria-labelledby="group-filter"
@@ -198,5 +199,33 @@ const { newTransactions } = useTransactionGroups(filteredTransactions);
   margin: 0;
   color: var(--secondary-text-color);
   font-size: 1.1rem;
+}
+
+@media (max-width: 575.98px) {
+  .budget-history__title {
+    font-size: 1.25rem;
+  }
+
+  .budget-history__actions {
+    width: 100%;
+  }
+
+  .budget-history {
+    height: auto;
+    max-height: none;
+  }
+
+  .budget-history__date-list {
+    padding: 0;
+    overflow-y: visible;
+    flex-grow: 0;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 374.98px) {
+  .budget-history__actions-text {
+    display: none;
+  }
 }
 </style>

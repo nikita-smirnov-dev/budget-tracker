@@ -138,4 +138,16 @@ watch(
 .budget-form__type {
   grid-template-columns: repeat(2, 1fr);
 }
+
+@media (max-width: 1023.98px) {
+  .budget-form__field {
+    width: 100%;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .budget-form__title {
+    font-size: 1.25rem;
+  }
+}
 </style>

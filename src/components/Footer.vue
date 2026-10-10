@@ -22,10 +22,15 @@ if (yearElement) yearElement.textContent = new Date().getFullYear().toString();
 
 .footer__text {
   margin: 0;
-  margin-bottom: 10px;
   text-align: center;
   font-size: 0.8rem;
   color: var(--secondary-text-color);
   opacity: 0.7;
+}
+
+@media (max-width: 575.98px) {
+  .footer {
+    padding: 20px 0;
+  }
 }
 </style>

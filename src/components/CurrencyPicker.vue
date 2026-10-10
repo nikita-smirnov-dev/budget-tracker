@@ -11,6 +11,7 @@ const emit = defineEmits<{
 const props = withDefaults(
   defineProps<{
     currency: CurrencyType;
+    name: string;
   }>(),
   {
     currency: 'RUB',
@@ -44,7 +45,7 @@ function getCurrencyChar(currency: CurrencyType): string | never {
     >
       <BaseInputRadio
         type="radio"
-        name="currency"
+        :name="props.name"
         value="RUB"
         is-checked
         aria-label="Российский рубль"
@@ -56,7 +57,7 @@ function getCurrencyChar(currency: CurrencyType): string | never {
       >
       <BaseInputRadio
         type="radio"
-        name="currency"
+        :name="props.name"
         value="USD"
         aria-label="Доллар США"
         :model-value="props.currency"
@@ -68,7 +69,7 @@ function getCurrencyChar(currency: CurrencyType): string | never {
       >
       <BaseInputRadio
         type="radio"
-        name="currency"
+        :name="props.name"
         value="EUR"
         aria-label="Евро"
         :model-value="props.currency"
@@ -80,7 +81,7 @@ function getCurrencyChar(currency: CurrencyType): string | never {
       >
       <BaseInputRadio
         type="radio"
-        name="currency"
+        :name="props.name"
         value="CNY"
         aria-label="Китайский юань"
         :model-value="props.currency"
@@ -101,5 +102,11 @@ function getCurrencyChar(currency: CurrencyType): string | never {
 
 .currency-title__type {
   grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 575.98px) {
+  .currency-title {
+    font-size: 1.25rem;
+  }
 }
 </style>

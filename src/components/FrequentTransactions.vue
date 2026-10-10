@@ -59,6 +59,7 @@ watch(
     </p>
     <div class="frequent-transactions__create">
       <BaseInput
+        class="frequent-transactions__field"
         placeholder="Введите название"
         v-model="newTagTitle"
         @keydown.enter.prevent="addNewTag"
@@ -115,6 +116,7 @@ watch(
 .frequent-transactions__descr {
   margin: 0;
 }
+
 .frequent-transactions__create {
   display: flex;
   align-items: center;
@@ -205,5 +207,22 @@ watch(
   margin: 0;
   color: var(--secondary-text-color);
   font-size: 1.1rem;
+}
+
+@media (max-width: 1023.98px) {
+  .frequent-transactions__field {
+    width: 100%;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .frequent-transactions__title {
+    font-size: 1.25rem;
+  }
+
+  .frequent-transactions__descr,
+  .frequent-transactions__info {
+    font-size: 0.875rem;
+  }
 }
 </style>
