@@ -1,31 +1,24 @@
 <script setup lang="ts">
+import { DEFAULT_TAGS } from '@/constants';
 import type { ITags } from '@/types/tagsTypes';
 import BaseButton from '@/UI/BaseButton.vue';
 import BaseInput from '@/UI/BaseInput.vue';
 import { BsPlus } from '@kalimahapps/vue-icons';
 import { MdClose } from '@kalimahapps/vue-icons';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 const newTagTitle = ref('');
 
-const defaultTags: ITags[] = [
-  { id: '1', title: 'Продукты' },
-  { id: '2', title: 'Телефон' },
-  { id: '3', title: 'Топливо' },
-  { id: '4', title: 'Интернет' },
-  { id: '5', title: 'Зарплата' },
-];
-
 const tags = ref<ITags[]>(
   JSON.parse(
-    localStorage.getItem('my-tags-list') || JSON.stringify(defaultTags),
+    localStorage.getItem('my-tags-list') || JSON.stringify(DEFAULT_TAGS),
   ),
 );
 
 const emit = defineEmits(['select-tag', 'title']);
 
 const addNewTag = () => {
-  if (newTagTitle.value.trim() === '') return;
+  if (isInputInvalid.value) return;
 
   const newTag = {
     id: Date.now().toString(),
@@ -40,6 +33,16 @@ const addNewTag = () => {
 const deleteTag = (id: string) => {
   tags.value = tags.value.filter((item) => item.id !== id);
 };
+
+const isInputInvalid = computed(() => {
+  const inputTag = newTagTitle.value.trim();
+
+  if (inputTag === '') {
+    return true;
+  } else {
+    return false;
+  }
+});
 
 watch(
   tags,
@@ -69,6 +72,7 @@ watch(
         class="frequent-transactions__add-btn"
         aria-label="Добавить тег"
         @click="addNewTag"
+        :disabled="isInputInvalid"
       >
         <BsPlus class="frequent-transactions__icon-add" aria-hidden="true" />
       </BaseButton>

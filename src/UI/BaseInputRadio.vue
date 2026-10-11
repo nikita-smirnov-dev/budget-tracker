@@ -59,6 +59,7 @@ const emit = defineEmits<{
   cursor: pointer;
   color: var(--secondary-text-color);
   transition: color 0.3s ease-in-out;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .base-radio:not(:last-child) {
@@ -88,6 +89,7 @@ const emit = defineEmits<{
   background: transparent;
   cursor: pointer;
   color: var(--secondary-text-color);
+  -webkit-tap-highlight-color: transparent;
   transition:
     color 0.3s ease-in-out,
     box-shadow 0.3s ease-in-out;

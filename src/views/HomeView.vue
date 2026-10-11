@@ -82,8 +82,15 @@ watch(currentCurrency, (newCurrency) => {
   <section class="container budget">
     <div class="budget__column">
       <BudgetBalance :total="totalBalance" :currency="currentCurrency" />
+      <BaseButton
+        class="budget-btn"
+        aria-label="откроыть форму добавления транзакции"
+        @click="handleOpenModal"
+      >
+        <span class="budget-btn__text">Внести операцию</span>
+      </BaseButton>
       <CurrencyPicker
-        class="budget-currency__mobile"
+        class="budget__currency budget__currency--mobile"
         :currency="currentCurrency"
         name="mobile-currency"
         @change-currency="handleCurrencyChange"
@@ -107,10 +114,11 @@ watch(currentCurrency, (newCurrency) => {
       />
     </div>
     <BaseButton
-      class="open-modal"
+      class="budget-btn--mobile"
       aria-label="откроыть форму добавления транзакции"
       @click="handleOpenModal"
-      ><BsPlus class="open-modal__icon" aria-hidden="true"
+    >
+      <BsPlus class="budget-btn__icon" aria-hidden="true"
     /></BaseButton>
     <Modal v-if="isOpen" @close="handleCloseModal">
       <div class="budget-modal">
@@ -138,7 +146,7 @@ watch(currentCurrency, (newCurrency) => {
   padding-bottom: 40px;
 }
 
-.budget-currency__mobile {
+.budget__currency--mobile {
   display: none;
 }
 
@@ -148,26 +156,9 @@ watch(currentCurrency, (newCurrency) => {
   gap: 16px;
 }
 
-.open-modal {
-  position: fixed;
-  right: 20px;
-  bottom: 40px;
+.budget-btn,
+.budget-btn--mobile {
   display: none;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  padding: 0;
-  border-radius: 8px;
-  z-index: 10;
-}
-
-.open-modal__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
 }
 
 @media (max-width: 1023.98px) {
@@ -176,12 +167,12 @@ watch(currentCurrency, (newCurrency) => {
   }
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 991.98px) {
   .budget {
     grid-template-columns: 1fr;
   }
 
-  .budget-currency__mobile {
+  .budget__currency--mobile {
     display: flex;
   }
 
@@ -189,7 +180,7 @@ watch(currentCurrency, (newCurrency) => {
     display: none;
   }
 
-  .open-modal {
+  .budget-btn {
     display: flex;
   }
 
@@ -197,6 +188,7 @@ watch(currentCurrency, (newCurrency) => {
     display: flex;
     flex-direction: column;
     gap: 40px;
+    width: 60%;
     padding: 20px;
     border-radius: 8px;
     background: var(--card-bg-color);
@@ -206,6 +198,38 @@ watch(currentCurrency, (newCurrency) => {
     padding: 0;
     background: transparent;
     border-radius: 0;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .budget-modal {
+    width: 100%;
+  }
+
+  .budget-btn {
+    display: none;
+  }
+
+  .budget-btn--mobile {
+    position: fixed;
+    right: 20px;
+    bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    border-radius: 8px;
+    z-index: 10;
+  }
+
+  .budget-btn__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
   }
 }
 

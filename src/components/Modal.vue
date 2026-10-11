@@ -39,7 +39,7 @@ onUnmounted(() => {
   width: 100%;
   height: 100vh;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.8);
   overflow-y: auto;
   overflow-x: hidden;
   z-index: 100;
@@ -47,7 +47,10 @@ onUnmounted(() => {
 
 .modal-content {
   position: relative;
-  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 20px;
 }
 
 .modal-close {
@@ -56,7 +59,7 @@ onUnmounted(() => {
   justify-content: center;
   padding: 0;
   position: absolute;
-  top: 8px;
+  top: 20px;
   right: 20px;
   width: 48px;
   height: 48px;
