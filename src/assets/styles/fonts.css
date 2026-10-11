@@ -11,8 +11,8 @@
 @font-face {
   font-family: 'Play';
   src:
-    url('@/assets/fonts/inter-Bold.woff') format('woff2'),
-    url('@/assets/fonts/inter-Bold.woff2') format('woff');
+    url('@/assets/fonts/Inter-Bold.woff') format('woff2'),
+    url('@/assets/fonts/Inter-Bold.woff2') format('woff');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
