@@ -100,7 +100,7 @@ const { newTransactions } = useTransactionGroups(filteredTransactions);
 <style scoped>
 .budget-history {
   min-height: 630px;
-  max-height: calc(100vh - 290px);
+  max-height: calc(100vh - 380px);
 }
 
 .budget-history__title {
@@ -134,8 +134,8 @@ const { newTransactions } = useTransactionGroups(filteredTransactions);
 
 .budget-history__date-list {
   display: flex;
-  flex-direction: column-reverse;
-  justify-content: flex-end;
+  flex-direction: column;
+  justify-content: flex-start;
   gap: 20px;
   flex-grow: 1;
   min-height: 0;
@@ -201,15 +201,7 @@ const { newTransactions } = useTransactionGroups(filteredTransactions);
   font-size: 1.1rem;
 }
 
-@media (max-width: 575.98px) {
-  .budget-history__title {
-    font-size: 1.25rem;
-  }
-
-  .budget-history__actions {
-    width: 100%;
-  }
-
+@media (max-width: 767.98px) {
   .budget-history {
     height: auto;
     max-height: none;
@@ -220,6 +212,16 @@ const { newTransactions } = useTransactionGroups(filteredTransactions);
     overflow-y: visible;
     flex-grow: 0;
     -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .budget-history__title {
+    font-size: 1.25rem;
+  }
+
+  .budget-history__actions {
+    width: 100%;
   }
 }
 
