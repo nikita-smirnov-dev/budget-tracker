@@ -16,8 +16,12 @@ const props = withDefaults(
 <template>
   <div class="budget-balance card">
     <h1 class="budget-balance__title">Ваш Баланс</h1>
-    <div class="budget-balance__info" data-balance>
-      <BaseAmount :value="total" :currency="currency" />
+    <div class="budget-balance__info">
+      <BaseAmount
+        :value="total"
+        :currency="currency"
+        :class="{ 'budget-balance__negative ': total < 0 }"
+      />
     </div>
   </div>
 </template>
@@ -31,6 +35,10 @@ const props = withDefaults(
   margin-bottom: 10px;
   font-size: 1.4rem;
   font-weight: bold;
+}
+
+.budget-balance__negative {
+  color: var(--color-error);
 }
 
 @media (max-width: 575.98px) {

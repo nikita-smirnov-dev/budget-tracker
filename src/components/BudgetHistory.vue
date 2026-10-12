@@ -24,7 +24,7 @@ const props = withDefaults(
 const transactionsRef = toRef(props, 'transactions');
 const emit = defineEmits(['delete-transaction']);
 
-const { filterHistory, filteredTransactions } =
+const { filterHistory, filteredTransactions, emptyStateText } =
   useTransactionFilter(transactionsRef);
 
 const { newTransactions } = useTransactionGroups(filteredTransactions);
@@ -93,7 +93,7 @@ const { newTransactions } = useTransactionGroups(filteredTransactions);
         </ul>
       </li>
     </ul>
-    <p v-else class="budget__descr">История операций пуста</p>
+    <p v-else class="budget__descr">{{ emptyStateText }}</p>
   </div>
 </template>
 

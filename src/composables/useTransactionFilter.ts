@@ -21,8 +21,24 @@ export function useTransactionFilter(transactions: Ref<Budget[] | null>) {
       throw new Error(`Unexpected value: ${_}`);
     }
   });
+
+  const emptyStateText = computed(() => {
+    const currentFilter = filterHistory.value.filter;
+
+    if (currentFilter === 'all') {
+      return 'История операций пуста';
+    } else if (currentFilter === 'incomes') {
+      return 'Доходы не найдены';
+    } else if (currentFilter === 'expenses') {
+      return 'Расходы не найдены';
+    } else {
+      const _: never = currentFilter;
+      throw new Error(`Unexpected value: ${_}`);
+    }
+  });
   return {
     filterHistory,
     filteredTransactions,
+    emptyStateText,
   };
 }
