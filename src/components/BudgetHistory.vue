@@ -67,18 +67,25 @@ const { newTransactions } = useTransactionGroups(filteredTransactions);
         >
       </BaseRadioGroup>
     </div>
-    <ul
+    <TransitionGroup
+      name="date-group"
+      tag="ul"
       v-if="filteredTransactions?.length > 0"
       class="budget-history__date-list list-reset"
     >
       <li
         class="budget-history__date-item"
         v-for="(dayTransactions, dateKey) in newTransactions"
+        :key="dateKey"
       >
         <span class="budget-history__date-text">{{
           formatGroupDate(dateKey)
         }}</span>
-        <ul class="budget-history__list list-reset">
+        <TransitionGroup
+          name="list"
+          tag="ul"
+          class="budget-history__list list-reset"
+        >
           <li
             class="budget-history__item"
             v-for="item of dayTransactions"
@@ -90,9 +97,9 @@ const { newTransactions } = useTransactionGroups(filteredTransactions);
               @delete="$emit('delete-transaction', $event)"
             />
           </li>
-        </ul>
+        </TransitionGroup>
       </li>
-    </ul>
+    </TransitionGroup>
     <p v-else class="budget__descr">{{ emptyStateText }}</p>
   </div>
 </template>
@@ -133,6 +140,7 @@ const { newTransactions } = useTransactionGroups(filteredTransactions);
 }
 
 .budget-history__date-list {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -176,6 +184,7 @@ const { newTransactions } = useTransactionGroups(filteredTransactions);
 }
 
 .budget-history__list {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -197,14 +206,60 @@ const { newTransactions } = useTransactionGroups(filteredTransactions);
   justify-content: center;
   flex-grow: 1;
   margin: 0;
+  margin-bottom: 20px;
   color: var(--secondary-text-color);
   font-size: 1.1rem;
+}
+
+.date-group-enter-active {
+  transition: opacity 0.3s ease;
+}
+
+.date-group-enter-from {
+  opacity: 0;
+}
+
+.date-group-leave-active {
+  position: absolute;
+  width: 100%;
+  transition: opacity 0.3s ease;
+}
+
+.date-group-leave-to {
+  opacity: 0;
+}
+
+.date-group-move {
+  transition: transform 0.3s ease;
+}
+
+.list-enter-active {
+  transition: opacity 0.3s ease;
+}
+
+.list-enter-from {
+  opacity: 0;
+}
+
+.list-leave-active {
+  position: absolute;
+  width: 100%;
+  transition: opacity 0.3s ease;
+}
+
+.list-leave-to {
+  opacity: 0;
+}
+
+.list-move {
+  transition: transform 0.3s ease;
 }
 
 @media (max-width: 767.98px) {
   .budget-history {
     height: auto;
     max-height: none;
+    min-height: auto;
   }
 
   .budget-history__date-list {

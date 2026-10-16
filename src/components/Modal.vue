@@ -3,6 +3,8 @@ import { MdClose } from '@kalimahapps/vue-icons';
 import BaseButton from '@/UI/BaseButton.vue';
 import { onMounted, onUnmounted } from 'vue';
 
+defineEmits(['close']);
+
 onMounted(() => {
   document.body.classList.add('stop-scroll');
 });
@@ -14,19 +16,21 @@ onUnmounted(() => {
 
 <template>
   <Teleport to="body">
-    <div class="modal-overlay">
-      <div class="modal-content">
-        <slot />
-        <BaseButton
-          class="modal-close"
-          variant-action="secondary"
-          aria-label="Закрыть модальное окно"
-          @click="$emit('close')"
-        >
-          <MdClose class="modal-close__icon" aria-hidden="true" />
-        </BaseButton>
+    <Transition name="modal">
+      <div class="modal-overlay" @click="$emit('close')">
+        <div class="modal-content" @click.stop>
+          <slot />
+          <BaseButton
+            class="modal-close"
+            variant-action="secondary"
+            aria-label="Закрыть модальное окно"
+            @click="$emit('close')"
+          >
+            <MdClose class="modal-close__icon" aria-hidden="true" />
+          </BaseButton>
+        </div>
       </div>
-    </div>
+    </Transition>
   </Teleport>
 </template>
 

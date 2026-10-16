@@ -76,6 +76,10 @@ watch(
 watch(currentCurrency, (newCurrency) => {
   localStorage.setItem('my-budget-currency', newCurrency);
 });
+
+// watch(isOpen, (newValue) => {
+//   document.body.classList.toggle('stop-scroll', newValue);
+// });
 </script>
 
 <template>
@@ -120,19 +124,21 @@ watch(currentCurrency, (newCurrency) => {
     >
       <BsPlus class="budget-btn__icon" aria-hidden="true"
     /></BaseButton>
-    <Modal v-if="isOpen" @close="handleCloseModal">
-      <div class="budget-modal">
-        <BudgetForm
-          class="budget-modal__card"
-          @add-transaction="updateTransactions"
-          :selected-title="formTitle"
-        />
-        <FrequentTransactions
-          class="budget-modal__card"
-          @select-tag="handleSelectTag"
-        />
-      </div>
-    </Modal>
+    <Transition name="modal">
+      <Modal v-if="isOpen" @close="handleCloseModal">
+        <div class="budget-modal">
+          <BudgetForm
+            class="budget-modal__card"
+            @add-transaction="updateTransactions"
+            :selected-title="formTitle"
+          />
+          <FrequentTransactions
+            class="budget-modal__card"
+            @select-tag="handleSelectTag"
+          />
+        </div>
+      </Modal>
+    </Transition>
   </section>
 </template>
 

@@ -103,6 +103,37 @@ input::-webkit-inner-spin-button {
   background: var(--card-bg-color);
 }
 
+.modal-enter-active {
+  animation: fade-in 0.3s ease;
+}
+
+.modal-enter-active:deep(.modal-content) {
+  animation: fade-in 0.3s ease;
+}
+
+.modal-leave-active {
+  animation: fade-out 0.3s ease;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 @media (max-width: 575.98px) {
   .card {
     padding: 10px;
