@@ -23,7 +23,7 @@
   display: inline-flex;
   align-items: center;
   font-size: 1.6rem;
-  color: var(--secondary-text-color);
+  color: var(--main-text-color);
 }
 
 .header__logo svg {

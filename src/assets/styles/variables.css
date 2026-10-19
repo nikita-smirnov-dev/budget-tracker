@@ -1,7 +1,13 @@
 :root {
   --main-color: #121214;
   --card-bg-color: #1a1a1e;
+  --card-shadow: none;
   --surface-color: #2a2a32;
+  --tag-color: #2a2a32;
+  --tag-hover-color: rgba(255, 255, 255, 0.05);
+  --active-radio-color: #121214;
+  --active-radio-hover-color: #eceff5;
+  --input-border: none;
   --main-text-color: #f3f4f6;
   --secondary-text-color: #8e8e93;
   --incomes-color: #22c55e;
@@ -10,4 +16,25 @@
   --accent-color: #6366f1;
   --hover-color: #4a4bce;
   --active-color: #3b3ca9;
+  --scroll-color: #444444;
+  --scroll-hover-color: #5e5c5c;
+}
+
+[data-theme='light'] {
+  --main-color: #eaf4ff;
+  --surface-color: #e2e8f0;
+  --card-bg-color: #ffffff;
+  --card-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  --input-border: inset 0 0 0 1px #cbd5e1;
+  --tag-color: #e2e8f0;
+  --tag-hover-color: rgba(15, 23, 42, 0.09);
+  --active-radio-color: #0069d9;
+  --active-radio-hover-color: #000;
+  --main-text-color: #0f172a;
+  --secondary-text-color: #64748b;
+  --accent-color: #0069d9;
+  --hover-color: #0056b3;
+  --active-color: #004085;
+  --scroll-color: #e2e8f0;
+  --scroll-hover-color: #94a3b8;
 }

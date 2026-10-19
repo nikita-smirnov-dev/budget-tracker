@@ -102,6 +102,7 @@ function getCurrencyChar(currency: CurrencyType): string | never {
 
 .currency-title__type {
   grid-template-columns: repeat(4, 1fr);
+  border: 1px solid #1a1a1e;
 }
 
 @media (max-width: 575.98px) {

@@ -137,6 +137,7 @@ watch(
 
 .budget-form__type {
   grid-template-columns: repeat(2, 1fr);
+  border: 1px solid #1a1a1e;
 }
 
 @media (max-width: 1023.98px) {

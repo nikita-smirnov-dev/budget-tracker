@@ -17,7 +17,7 @@ if (yearElement) yearElement.textContent = new Date().getFullYear().toString();
 <style scoped>
 .footer {
   padding: 40px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid #b4b4b4;
 }
 
 .footer__text {

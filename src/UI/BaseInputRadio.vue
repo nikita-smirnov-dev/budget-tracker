@@ -63,7 +63,7 @@ const emit = defineEmits<{
 }
 
 .base-radio:not(:last-child) {
-  border-right: 1px solid var(--card-bg-color);
+  border-right: 1px solid #1a1a1e;
 }
 
 .base-radio:has(input[type='radio']:focus-visible) {
@@ -71,12 +71,12 @@ const emit = defineEmits<{
 }
 
 .base-radio:not(:has(input[type='radio']:checked)):hover {
-  color: #f3f4f6;
+  color: var(--active-radio-hover-color);
 }
 
 .base-radio:has(input[type='radio']:checked) {
   color: #f3f4f6;
-  background: var(--main-color);
+  background: var(--active-radio-color);
   transition: background 0.3s ease-in-out;
 }
 
@@ -100,7 +100,7 @@ const emit = defineEmits<{
 }
 
 .base-filter:not(:has(input[type='radio']:checked)):hover {
-  color: #f3f4f6;
+  color: var(--active-radio-hover-color);
 }
 
 .base-filter input[type='radio'] {
@@ -112,7 +112,7 @@ const emit = defineEmits<{
 
 .base-filter:has(input[type='radio']:checked) {
   color: #f3f4f6;
-  background: var(--main-color);
+  background: var(--active-radio-color);
   transition: background 0.3s ease-in-out;
 }
 </style>

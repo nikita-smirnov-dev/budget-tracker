@@ -77,6 +77,6 @@ onUnmounted(() => {
 .modal-close__icon {
   width: 30px;
   height: 30px;
-  color: var(--color-black);
+  color: var(--main-text-color);
 }
 </style>

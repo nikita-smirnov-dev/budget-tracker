@@ -160,12 +160,12 @@ const { newTransactions } = useTransactionGroups(filteredTransactions);
 }
 
 .budget-history__date-list::-webkit-scrollbar-thumb {
-  background-color: #444444;
+  background: var(--scroll-color);
   border-radius: 10px;
 }
 
 .budget-history__date-list::-webkit-scrollbar-thumb:hover {
-  background-color: #555555;
+  background: var(--scroll-hover-color);
 }
 
 .budget-history__date-item {

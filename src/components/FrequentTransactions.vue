@@ -119,6 +119,7 @@ watch(
 
 .frequent-transactions__descr {
   margin: 0;
+  color: var(--secondary-text-color);
 }
 
 .frequent-transactions__create {
@@ -154,11 +155,12 @@ watch(
   gap: 10px;
   padding: 10px 14px;
   border-radius: 50px;
-  background: var(--surface-color);
+  background: var(--tag-color);
 }
 
 .frequent-transactions__tag-btn {
   padding: 0;
+  color: var(--main-text-color);
 }
 
 .frequent-transactions__tag-btn::after {
@@ -172,7 +174,7 @@ watch(
 }
 
 .frequent-transactions__tag-btn:hover::after {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--tag-hover-color);
 }
 
 .frequent-transactions__delete-btn {
@@ -181,6 +183,7 @@ watch(
   align-items: center;
   justify-content: center;
   padding: 0;
+  color: var(--main-text-color);
   z-index: 2;
   opacity: 0.5;
   transition:

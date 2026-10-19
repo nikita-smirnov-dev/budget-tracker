@@ -76,10 +76,6 @@ watch(
 watch(currentCurrency, (newCurrency) => {
   localStorage.setItem('my-budget-currency', newCurrency);
 });
-
-// watch(isOpen, (newValue) => {
-//   document.body.classList.toggle('stop-scroll', newValue);
-// });
 </script>
 
 <template>

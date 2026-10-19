@@ -7,6 +7,11 @@ html {
 *::before,
 *::after {
   box-sizing: inherit;
+  transition:
+    background-color 0.3s ease-in-out,
+    color 0.3s ease-in-out,
+    border-color 0.3s ease-in-out,
+    box-shadow 0.3s ease-in-out;
 }
 
 .page {
@@ -101,6 +106,7 @@ input::-webkit-inner-spin-button {
   padding: 20px;
   border-radius: 8px;
   background: var(--card-bg-color);
+  box-shadow: var(--card-shadow);
 }
 
 .modal-enter-active {

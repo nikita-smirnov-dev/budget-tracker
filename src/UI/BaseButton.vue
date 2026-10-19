@@ -29,7 +29,7 @@ const props = withDefaults(
   font-size: 1rem;
   font-weight: bold;
   border-radius: 8px;
-  color: var(--main-text-color);
+  color: #ffffff;
   transition: background 0.3s ease-in-out;
 }
 
