@@ -46,8 +46,20 @@ const emit = defineEmits(['select-theme']);
   justify-content: center;
   padding: 5px;
   border-radius: 8px;
-  border: 2px solid var(--main-text-color);
+  border: 1px solid var(--main-text-color);
   color: var(--main-text-color);
+  opacity: 0.5;
+  transition: opacity 0.2s ease-in-out;
+}
+
+@media (hover: hover) {
+  .theme:hover {
+    opacity: 1;
+  }
+}
+
+.theme:active {
+  opacity: 1;
 }
 
 .theme__icon {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 
 import BaseButton from '@/UI/BaseButton.vue';
 import BaseInput from '@/UI/BaseInput.vue';
@@ -7,6 +7,8 @@ import BaseInputRadio from '@/UI/BaseInputRadio.vue';
 import BaseRadioGroup from '@/UI/BaseRadioGroup.vue';
 
 import type { TransactionType } from '@/types/budgetTypes';
+import { createTransaction } from '@/utils/createTransaction';
+import { useFormValidation } from '@/composables/useFormValidation';
 
 const emit = defineEmits(['add-transaction']);
 
@@ -14,7 +16,12 @@ const props = defineProps<{
   selectedTitle?: string;
 }>();
 
-const isSubmitted = ref(false);
+const { isFormInvalid, isSubmitted } = useFormValidation(
+  () =>
+    budgetObj.value.title.trim() === '' ||
+    budgetObj.value.amount === null ||
+    budgetObj.value.amount <= 0,
+);
 
 const budgetObj = ref({
   title: '',
@@ -27,14 +34,12 @@ const sendForm = () => {
 
   if (isFormInvalid.value) return;
 
-  const id = Date.now().toString();
-  const createdAt = new Date().setHours(0, 0, 0, 0);
-  const newTransaction = {
-    ...budgetObj.value,
-    id,
-    createdAt,
-    amount: budgetObj.value.amount || 0,
-  };
+  const newTransaction = createTransaction(
+    budgetObj.value.title,
+    budgetObj.value.amount || 0,
+    budgetObj.value.type,
+  );
+
   emit('add-transaction', newTransaction);
   budgetObj.value = {
     title: '',
@@ -44,17 +49,6 @@ const sendForm = () => {
 
   isSubmitted.value = false;
 };
-
-const isFormInvalid = computed(() => {
-  const inputTitle = budgetObj.value.title.trim();
-  const inputAmount = budgetObj.value.amount;
-
-  if (inputAmount === null || inputTitle === '' || inputAmount <= 0) {
-    return true;
-  } else {
-    return false;
-  }
-});
 
 watch(
   () => props.selectedTitle,
@@ -74,6 +68,7 @@ watch(
       type="text"
       placeholder="Введите название"
       v-model="budgetObj.title"
+      @focusin="isSubmitted = false"
       :is-error="
         isSubmitted && budgetObj.title.trim() === ''
           ? 'Введите название транзакции'
@@ -86,6 +81,7 @@ watch(
       placeholder="Введите сумму"
       v-model.number="budgetObj.amount"
       step="0.01"
+      @focusin="isSubmitted = false"
       :is-error="
         isSubmitted && (budgetObj.amount === null || budgetObj.amount <= 0)
           ? 'Сумма должна быть больше нуля'
@@ -111,7 +107,10 @@ watch(
         >Расход</BaseInputRadio
       >
     </BaseRadioGroup>
-    <BaseButton class="budget-form__btn" type="submit" :disabled="isFormInvalid"
+    <BaseButton
+      class="budget-form__btn"
+      type="submit"
+      :disabled="isSubmitted && isFormInvalid"
       >Добавить транзакцию</BaseButton
     >
   </form>

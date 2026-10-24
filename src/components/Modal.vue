@@ -3,6 +3,15 @@ import { MdClose } from '@kalimahapps/vue-icons';
 import BaseButton from '@/UI/BaseButton.vue';
 import { onMounted, onUnmounted } from 'vue';
 
+const props = withDefaults(
+  defineProps<{
+    showClose?: boolean;
+  }>(),
+  {
+    showClose: true,
+  },
+);
+
 defineEmits(['close']);
 
 onMounted(() => {
@@ -21,6 +30,7 @@ onUnmounted(() => {
         <div class="modal-content" @click.stop>
           <slot />
           <BaseButton
+            v-if="showClose"
             class="modal-close"
             variant-action="secondary"
             aria-label="Закрыть модальное окно"

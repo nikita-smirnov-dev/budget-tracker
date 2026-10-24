@@ -8,6 +8,7 @@ import { MdClose } from '@kalimahapps/vue-icons';
 import { computed, ref, watch } from 'vue';
 
 const newTagTitle = ref('');
+const hasError = ref(false);
 
 const tags = ref<ITags[]>(
   JSON.parse(
@@ -18,7 +19,11 @@ const tags = ref<ITags[]>(
 const emit = defineEmits(['select-tag', 'title']);
 
 const addNewTag = () => {
-  if (isInputInvalid.value) return;
+  if (tagErrorText.value !== '') {
+    hasError.value = true;
+
+    return;
+  }
 
   const newTag = {
     id: Date.now().toString(),
@@ -27,6 +32,7 @@ const addNewTag = () => {
 
   tags.value.push(newTag);
 
+  hasError.value = false;
   newTagTitle.value = '';
 };
 
@@ -34,14 +40,22 @@ const deleteTag = (id: string) => {
   tags.value = tags.value.filter((item) => item.id !== id);
 };
 
-const isInputInvalid = computed(() => {
+const tagErrorText = computed(() => {
   const inputTag = newTagTitle.value.trim();
 
   if (inputTag === '') {
-    return true;
-  } else {
-    return false;
+    return 'Название тега не может быть пустым';
   }
+
+  if (inputTag.length > 15) {
+    return 'Слишком длинное название (макс. 15 символов)';
+  }
+
+  if (tags.value.some((item) => item.title === inputTag)) {
+    return 'Такой тег уже существует';
+  }
+
+  return '';
 });
 
 watch(
@@ -66,13 +80,14 @@ watch(
         placeholder="Введите название"
         v-model="newTagTitle"
         @keydown.enter.prevent="addNewTag"
+        :is-error="hasError ? tagErrorText : ''"
+        @focusin="hasError = false"
       />
       <BaseButton
         type="button"
         class="frequent-transactions__add-btn"
         aria-label="Добавить тег"
         @click="addNewTag"
-        :disabled="isInputInvalid"
       >
         <BsPlus class="frequent-transactions__icon-add" aria-hidden="true" />
       </BaseButton>
@@ -129,7 +144,7 @@ watch(
 }
 
 .frequent-transactions__add-btn {
-  padding: 8px;
+  padding: 9px;
 }
 
 .frequent-transactions__icon-add {

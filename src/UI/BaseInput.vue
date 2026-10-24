@@ -16,7 +16,6 @@ const props = withDefaults(
     step: '',
   },
 );
-
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string | number): void;
 }>();
@@ -48,31 +47,29 @@ const emit = defineEmits<{
   box-shadow: var(--input-border);
   padding: 12px 16px;
   border-radius: 8px;
+  border: 1px solid transparent;
   background-color: var(--surface-color);
-}
-
-.base-input:focus-visible {
-  box-shadow: inset 0 0 0 2px var(--accent-color);
 }
 
 .base-input::placeholder {
   color: var(--secondary-text-color);
 }
 
+.base-input:focus {
+  box-shadow: inset 0 0 0 2px var(--accent-color);
+}
+
 .input-error .base-input {
-  border-color: var(--color-error);
+  box-shadow: inset 0 0 0 2px var(--color-error);
 }
 
-.input-error:hover {
-  border-color: var(--color-error);
-}
-
-.input-error:hover :deep(svg) {
-  color: var(--color-error);
+.input-error .base-input:focus {
+  box-shadow: inset 0 0 0 2px var(--color-error);
 }
 
 .error-text {
   display: block;
+  position: absolute;
   margin-top: 4px;
   font-size: 0.8rem;
   color: var(--color-error);

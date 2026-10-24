@@ -12,17 +12,11 @@ import Modal from '@/components/Modal.vue';
 
 import type { Budget } from '@/types/budgetTypes';
 import type { CurrencyType } from '@/types/currencyTypes';
+import BudgetStartScreen from '@/components/BudgetStartScreen.vue';
 
 const formTitle = ref('');
-const isOpen = ref(false);
-
-const handleOpenModal = () => {
-  isOpen.value = true;
-};
-
-const handleCloseModal = () => {
-  isOpen.value = false;
-};
+const isOpen = ref<boolean>(false);
+const isFirstStart = ref<boolean>(!localStorage.getItem('budget-first-start'));
 
 const currentCurrency = ref<CurrencyType>(
   (localStorage.getItem('my-budget-currency') as CurrencyType) || 'RUB',
@@ -31,6 +25,14 @@ const currentCurrency = ref<CurrencyType>(
 const transactions = ref<Budget[]>(
   JSON.parse(localStorage.getItem('my-budget-list') || '[]'),
 );
+
+const handleOpenModal = () => {
+  isOpen.value = true;
+};
+
+const handleCloseModal = () => {
+  isOpen.value = false;
+};
 
 const updateTransactions = (transaction: Budget) => {
   transactions.value.push(transaction);
@@ -65,6 +67,12 @@ const handleCurrencyChange = (value: CurrencyType) => {
   currentCurrency.value = value;
 };
 
+const handleFirstInput = (firstTransaction: Budget) => {
+  updateTransactions(firstTransaction);
+  localStorage.setItem('budget-first-start', 'true');
+  isFirstStart.value = false;
+};
+
 watch(
   transactions,
   (newValues) => {
@@ -80,61 +88,67 @@ watch(currentCurrency, (newCurrency) => {
 
 <template>
   <section class="container budget">
-    <div class="budget__column">
-      <BudgetBalance :total="totalBalance" :currency="currentCurrency" />
+    <BudgetStartScreen
+      v-if="isFirstStart"
+      @add-first-transaction="handleFirstInput"
+    />
+    <template v-else>
+      <div class="budget__column">
+        <BudgetBalance :total="totalBalance" :currency="currentCurrency" />
+        <BaseButton
+          class="budget-btn"
+          aria-label="откроыть форму добавления транзакции"
+          @click="handleOpenModal"
+        >
+          <span class="budget-btn__text">Внести операцию</span>
+        </BaseButton>
+        <CurrencyPicker
+          class="budget__currency budget__currency--mobile"
+          :currency="currentCurrency"
+          name="mobile-currency"
+          @change-currency="handleCurrencyChange"
+        />
+        <BudgetHistory
+          :transactions="transactions"
+          :currency="currentCurrency"
+          @delete-transaction="deleteTransaction"
+        />
+      </div>
+      <div class="budget__column budget__column--hidden">
+        <CurrencyPicker
+          :currency="currentCurrency"
+          name="desktop-currency"
+          @change-currency="handleCurrencyChange"
+        />
+        <FrequentTransactions @select-tag="handleSelectTag" />
+        <BudgetForm
+          @add-transaction="updateTransactions"
+          :selected-title="formTitle"
+        />
+      </div>
       <BaseButton
-        class="budget-btn"
+        class="budget-btn--mobile"
         aria-label="откроыть форму добавления транзакции"
         @click="handleOpenModal"
       >
-        <span class="budget-btn__text">Внести операцию</span>
-      </BaseButton>
-      <CurrencyPicker
-        class="budget__currency budget__currency--mobile"
-        :currency="currentCurrency"
-        name="mobile-currency"
-        @change-currency="handleCurrencyChange"
-      />
-      <BudgetHistory
-        :transactions="transactions"
-        :currency="currentCurrency"
-        @delete-transaction="deleteTransaction"
-      />
-    </div>
-    <div class="budget__column budget__column--hidden">
-      <CurrencyPicker
-        :currency="currentCurrency"
-        name="desktop-currency"
-        @change-currency="handleCurrencyChange"
-      />
-      <FrequentTransactions @select-tag="handleSelectTag" />
-      <BudgetForm
-        @add-transaction="updateTransactions"
-        :selected-title="formTitle"
-      />
-    </div>
-    <BaseButton
-      class="budget-btn--mobile"
-      aria-label="откроыть форму добавления транзакции"
-      @click="handleOpenModal"
-    >
-      <BsPlus class="budget-btn__icon" aria-hidden="true"
-    /></BaseButton>
-    <Transition name="modal">
-      <Modal v-if="isOpen" @close="handleCloseModal">
-        <div class="budget-modal">
-          <BudgetForm
-            class="budget-modal__card"
-            @add-transaction="updateTransactions"
-            :selected-title="formTitle"
-          />
-          <FrequentTransactions
-            class="budget-modal__card"
-            @select-tag="handleSelectTag"
-          />
-        </div>
-      </Modal>
-    </Transition>
+        <BsPlus class="budget-btn__icon" aria-hidden="true"
+      /></BaseButton>
+      <Transition name="modal">
+        <Modal v-if="isOpen" @close="handleCloseModal">
+          <div class="budget-modal">
+            <BudgetForm
+              class="budget-modal__card"
+              @add-transaction="updateTransactions"
+              :selected-title="formTitle"
+            />
+            <FrequentTransactions
+              class="budget-modal__card"
+              @select-tag="handleSelectTag"
+            />
+          </div>
+        </Modal>
+      </Transition>
+    </template>
   </section>
 </template>
 
