@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, onMounted } from 'vue';
 import { BsPlus } from '@kalimahapps/vue-icons';
 
 import BudgetBalance from '@/components/BudgetBalance.vue';
@@ -22,9 +22,26 @@ const currentCurrency = ref<CurrencyType>(
   (localStorage.getItem('my-budget-currency') as CurrencyType) || 'RUB',
 );
 
-const transactions = ref<Budget[]>(
-  JSON.parse(localStorage.getItem('my-budget-list') || '[]'),
-);
+const transactions = ref<Budget[]>([]);
+
+const loadTransaction = async () => {
+  try {
+    const response = await fetch('http://localhost:3000/api/transaction');
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    transactions.value = data;
+  } catch (error) {
+    console.error('Нет данных в ответе от API:', error);
+  }
+};
+
+onMounted(() => {
+  loadTransaction();
+});
 
 const handleOpenModal = () => {
   isOpen.value = true;
