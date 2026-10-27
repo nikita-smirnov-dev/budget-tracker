@@ -1,12 +1,14 @@
 <script setup lang="ts">
 const props = withDefaults(
   defineProps<{
+    type?: 'button' | 'submit' | 'reset';
     disabled?: boolean;
     variantAction?: 'primary' | 'secondary' | 'icon';
   }>(),
   {
     disabled: false,
     variantAction: 'primary',
+    type: 'button',
   },
 );
 </script>
@@ -14,8 +16,9 @@ const props = withDefaults(
 <template>
   <button
     class="base-button btn-reset"
-    :class="`base-button--${props.variantAction}`"
-    :disabled="props.disabled"
+    :type="type"
+    :class="`base-button--${variantAction}`"
+    :disabled="disabled"
   >
     <slot />
   </button>
