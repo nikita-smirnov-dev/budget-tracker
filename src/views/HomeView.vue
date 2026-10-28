@@ -17,6 +17,7 @@ import BudgetStartScreen from '@/components/BudgetStartScreen.vue';
 const formTitle = ref('');
 const isOpen = ref<boolean>(false);
 const isFirstStart = ref<boolean>(!localStorage.getItem('budget-first-start'));
+const API_BASE_URL = 'http://localhost:3000/api/transaction';
 
 const currentCurrency = ref<CurrencyType>(
   (localStorage.getItem('my-budget-currency') as CurrencyType) || 'RUB',
@@ -24,9 +25,9 @@ const currentCurrency = ref<CurrencyType>(
 
 const transactions = ref<Budget[]>([]);
 
-const loadTransaction = async () => {
+const fetchLoadTransaction = async () => {
   try {
-    const response = await fetch('http://localhost:3000/api/transaction');
+    const response = await fetch(`${API_BASE_URL}`);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -39,8 +40,54 @@ const loadTransaction = async () => {
   }
 };
 
+const fetchUpdateTransactions = async (transaction: Budget) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(transaction),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    transactions.value.push(data);
+  } catch (error) {
+    console.error('Add new transaction fetch error:', error);
+    throw error;
+  }
+
+  if (isOpen.value) {
+    handleCloseModal();
+  }
+};
+
+const fetchDeleteTransaction = async (id: string) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/${id}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    transactions.value = transactions.value.filter(
+      (item) => item.id !== data.id,
+    );
+  } catch (error) {
+    console.error('Delete transaction fetch error:', error);
+    throw error;
+  }
+};
+
 onMounted(() => {
-  loadTransaction();
+  fetchLoadTransaction();
 });
 
 const handleOpenModal = () => {
@@ -49,14 +96,6 @@ const handleOpenModal = () => {
 
 const handleCloseModal = () => {
   isOpen.value = false;
-};
-
-const updateTransactions = (transaction: Budget) => {
-  transactions.value.push(transaction);
-
-  if (isOpen.value) {
-    handleCloseModal();
-  }
 };
 
 const totalBalance = computed(() => {
@@ -72,10 +111,6 @@ const totalBalance = computed(() => {
   return total;
 });
 
-const deleteTransaction = (id: string) => {
-  transactions.value = transactions.value.filter((item) => item.id !== id);
-};
-
 const handleSelectTag = (title: string) => {
   formTitle.value = title;
 };
@@ -85,7 +120,7 @@ const handleCurrencyChange = (value: CurrencyType) => {
 };
 
 const handleFirstInput = (firstTransaction: Budget) => {
-  updateTransactions(firstTransaction);
+  fetchUpdateTransactions(firstTransaction);
   localStorage.setItem('budget-first-start', 'true');
   isFirstStart.value = false;
 };
@@ -128,7 +163,7 @@ watch(currentCurrency, (newCurrency) => {
         <BudgetHistory
           :transactions="transactions"
           :currency="currentCurrency"
-          @delete-transaction="deleteTransaction"
+          @delete-transaction="fetchDeleteTransaction"
         />
       </div>
       <div class="budget__column budget__column--hidden">
@@ -139,7 +174,7 @@ watch(currentCurrency, (newCurrency) => {
         />
         <FrequentTransactions @select-tag="handleSelectTag" />
         <BudgetForm
-          @add-transaction="updateTransactions"
+          @add-transaction="fetchUpdateTransactions"
           :selected-title="formTitle"
         />
       </div>
@@ -155,7 +190,7 @@ watch(currentCurrency, (newCurrency) => {
           <div class="budget-modal">
             <BudgetForm
               class="budget-modal__card"
-              @add-transaction="updateTransactions"
+              @add-transaction="fetchUpdateTransactions"
               :selected-title="formTitle"
             />
             <FrequentTransactions
