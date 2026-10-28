@@ -10,54 +10,42 @@ import FrequentTransactions from '@/components/FrequentTransactions.vue';
 import BaseButton from '@/UI/BaseButton.vue';
 import Modal from '@/components/Modal.vue';
 
-import type { Budget } from '@/types/budgetTypes';
+import type { Budget, BudgetList } from '@/types/budgetTypes';
 import type { CurrencyType } from '@/types/currencyTypes';
 import BudgetStartScreen from '@/components/BudgetStartScreen.vue';
+import {
+  fetchDeleteTransaction,
+  fetchLoadTransaction,
+  fetchUpdateTransactions,
+} from '@/api/transactions';
 
 const formTitle = ref('');
 const isOpen = ref<boolean>(false);
 const isFirstStart = ref<boolean>(!localStorage.getItem('budget-first-start'));
-const API_BASE_URL = 'http://localhost:3000/api/transaction';
 
 const currentCurrency = ref<CurrencyType>(
   (localStorage.getItem('my-budget-currency') as CurrencyType) || 'RUB',
 );
 
-const transactions = ref<Budget[]>([]);
+const transactions = ref<BudgetList>([]);
 
-const fetchLoadTransaction = async () => {
+const loadTransaction = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}`);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
+    const data = await fetchLoadTransaction();
     transactions.value = data;
   } catch (error) {
-    console.error('Нет данных в ответе от API:', error);
+    console.error(error);
+    throw error;
   }
 };
 
-const fetchUpdateTransactions = async (transaction: Budget) => {
+const updateTransactions = async (transaction: Budget) => {
   try {
-    const response = await fetch(`${API_BASE_URL}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(transaction),
-    });
+    await fetchUpdateTransactions(transaction);
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    transactions.value.push(data);
+    transactions.value.push(transaction);
   } catch (error) {
-    console.error('Add new transaction fetch error:', error);
+    console.error(error);
     throw error;
   }
 
@@ -66,28 +54,18 @@ const fetchUpdateTransactions = async (transaction: Budget) => {
   }
 };
 
-const fetchDeleteTransaction = async (id: string) => {
+const deleteTransaction = async (id: string) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/${id}`, {
-      method: 'DELETE',
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    transactions.value = transactions.value.filter(
-      (item) => item.id !== data.id,
-    );
+    await fetchDeleteTransaction(id);
+    transactions.value = transactions.value.filter((item) => item.id !== id);
   } catch (error) {
-    console.error('Delete transaction fetch error:', error);
+    console.error(error);
     throw error;
   }
 };
 
 onMounted(() => {
-  fetchLoadTransaction();
+  loadTransaction();
 });
 
 const handleOpenModal = () => {
@@ -120,7 +98,7 @@ const handleCurrencyChange = (value: CurrencyType) => {
 };
 
 const handleFirstInput = (firstTransaction: Budget) => {
-  fetchUpdateTransactions(firstTransaction);
+  updateTransactions(firstTransaction);
   localStorage.setItem('budget-first-start', 'true');
   isFirstStart.value = false;
 };
@@ -163,7 +141,7 @@ watch(currentCurrency, (newCurrency) => {
         <BudgetHistory
           :transactions="transactions"
           :currency="currentCurrency"
-          @delete-transaction="fetchDeleteTransaction"
+          @delete-transaction="deleteTransaction"
         />
       </div>
       <div class="budget__column budget__column--hidden">
@@ -174,7 +152,7 @@ watch(currentCurrency, (newCurrency) => {
         />
         <FrequentTransactions @select-tag="handleSelectTag" />
         <BudgetForm
-          @add-transaction="fetchUpdateTransactions"
+          @add-transaction="updateTransactions"
           :selected-title="formTitle"
         />
       </div>
@@ -190,7 +168,7 @@ watch(currentCurrency, (newCurrency) => {
           <div class="budget-modal">
             <BudgetForm
               class="budget-modal__card"
-              @add-transaction="fetchUpdateTransactions"
+              @add-transaction="updateTransactions"
               :selected-title="formTitle"
             />
             <FrequentTransactions

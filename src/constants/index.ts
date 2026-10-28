@@ -7,3 +7,5 @@ export const DEFAULT_TAGS: ITags[] = [
   { id: '4', title: 'Интернет' },
   { id: '5', title: 'Зарплата' },
 ];
+
+export const API_BASE_URL = 'http://localhost:3000/api/transaction';
