@@ -10,14 +10,11 @@ import FrequentTransactions from '@/components/FrequentTransactions.vue';
 import BaseButton from '@/UI/BaseButton.vue';
 import Modal from '@/components/Modal.vue';
 
-import type { Budget, BudgetList } from '@/types/budgetTypes';
+import type { Budget } from '@/types/budgetTypes';
 import type { CurrencyType } from '@/types/currencyTypes';
 import BudgetStartScreen from '@/components/BudgetStartScreen.vue';
-import {
-  fetchDeleteTransaction,
-  fetchLoadTransaction,
-  fetchUpdateTransactions,
-} from '@/api/transactions';
+
+import { useBudgetStore } from '@/stores/budgetStore';
 
 const formTitle = ref('');
 const isOpen = ref<boolean>(false);
@@ -27,45 +24,10 @@ const currentCurrency = ref<CurrencyType>(
   (localStorage.getItem('my-budget-currency') as CurrencyType) || 'RUB',
 );
 
-const transactions = ref<BudgetList>([]);
-
-const loadTransaction = async () => {
-  try {
-    const data = await fetchLoadTransaction();
-    transactions.value = data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
-
-const updateTransactions = async (transaction: Budget) => {
-  try {
-    await fetchUpdateTransactions(transaction);
-
-    transactions.value.push(transaction);
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-
-  if (isOpen.value) {
-    handleCloseModal();
-  }
-};
-
-const deleteTransaction = async (id: string) => {
-  try {
-    await fetchDeleteTransaction(id);
-    transactions.value = transactions.value.filter((item) => item.id !== id);
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
+const budgetStore = useBudgetStore();
 
 onMounted(() => {
-  loadTransaction();
+  budgetStore.loadTransaction();
 });
 
 const handleOpenModal = () => {
@@ -77,7 +39,7 @@ const handleCloseModal = () => {
 };
 
 const totalBalance = computed(() => {
-  const total = transactions.value.reduce((acc, item) => {
+  const total = budgetStore.transactions.reduce((acc, item) => {
     if (item.type === 'income') {
       acc += item.amount;
     }
@@ -98,13 +60,20 @@ const handleCurrencyChange = (value: CurrencyType) => {
 };
 
 const handleFirstInput = (firstTransaction: Budget) => {
-  updateTransactions(firstTransaction);
+  budgetStore.updateTransactions(firstTransaction);
   localStorage.setItem('budget-first-start', 'true');
   isFirstStart.value = false;
 };
 
+const handleAddTransaction = async (transaction: Budget) => {
+  await budgetStore.updateTransactions(transaction);
+  if (isOpen.value) {
+    handleCloseModal();
+  }
+};
+
 watch(
-  transactions,
+  budgetStore.transactions,
   (newValues) => {
     localStorage.setItem('my-budget-list', JSON.stringify(newValues));
   },
@@ -139,9 +108,9 @@ watch(currentCurrency, (newCurrency) => {
           @change-currency="handleCurrencyChange"
         />
         <BudgetHistory
-          :transactions="transactions"
+          :transactions="budgetStore.transactions"
           :currency="currentCurrency"
-          @delete-transaction="deleteTransaction"
+          @delete-transaction="budgetStore.deleteTransaction"
         />
       </div>
       <div class="budget__column budget__column--hidden">
@@ -152,7 +121,7 @@ watch(currentCurrency, (newCurrency) => {
         />
         <FrequentTransactions @select-tag="handleSelectTag" />
         <BudgetForm
-          @add-transaction="updateTransactions"
+          @add-transaction="budgetStore.updateTransactions"
           :selected-title="formTitle"
         />
       </div>
@@ -168,7 +137,7 @@ watch(currentCurrency, (newCurrency) => {
           <div class="budget-modal">
             <BudgetForm
               class="budget-modal__card"
-              @add-transaction="updateTransactions"
+              @add-transaction="handleAddTransaction"
               :selected-title="formTitle"
             />
             <FrequentTransactions
