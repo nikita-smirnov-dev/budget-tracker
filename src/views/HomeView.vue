@@ -12,13 +12,15 @@ import Modal from '@/components/Modal.vue';
 
 import type { Budget } from '@/types/budgetTypes';
 import type { CurrencyType } from '@/types/currencyTypes';
-import BudgetStartScreen from '@/components/BudgetStartScreen.vue';
+// import BudgetStartScreen from '@/components/BudgetStartScreen.vue';
 
 import { useBudgetStore } from '@/stores/budgetStore';
+import BasePageLoader from '@/UI/BasePageLoader.vue';
+import BaseError from '@/UI/BaseError.vue';
 
 const formTitle = ref('');
 const isOpen = ref<boolean>(false);
-const isFirstStart = ref<boolean>(!localStorage.getItem('budget-first-start'));
+// const isFirstStart = ref<boolean>(!localStorage.getItem('budget-first-start'));
 
 const currentCurrency = ref<CurrencyType>(
   (localStorage.getItem('my-budget-currency') as CurrencyType) || 'RUB',
@@ -59,11 +61,11 @@ const handleCurrencyChange = (value: CurrencyType) => {
   currentCurrency.value = value;
 };
 
-const handleFirstInput = (firstTransaction: Budget) => {
-  budgetStore.updateTransactions(firstTransaction);
-  localStorage.setItem('budget-first-start', 'true');
-  isFirstStart.value = false;
-};
+// const handleFirstInput = (firstTransaction: Budget) => {
+//   budgetStore.updateTransactions(firstTransaction);
+//   localStorage.setItem('budget-first-start', 'true');
+//   isFirstStart.value = false;
+// };
 
 const handleAddTransaction = async (transaction: Budget) => {
   await budgetStore.updateTransactions(transaction);
@@ -87,10 +89,14 @@ watch(currentCurrency, (newCurrency) => {
 
 <template>
   <section class="container budget">
-    <BudgetStartScreen
+    <template v-if="budgetStore.isLoading"><BasePageLoader /> </template>
+    <template v-else-if="budgetStore.error">
+      <BaseError :message="budgetStore.error" />
+    </template>
+    <!-- <BudgetStartScreen
       v-if="isFirstStart"
       @add-first-transaction="handleFirstInput"
-    />
+    /> -->
     <template v-else>
       <div class="budget__column">
         <BudgetBalance :total="totalBalance" :currency="currentCurrency" />
@@ -110,7 +116,6 @@ watch(currentCurrency, (newCurrency) => {
         <BudgetHistory
           :transactions="budgetStore.transactions"
           :currency="currentCurrency"
-          @delete-transaction="budgetStore.deleteTransaction"
         />
       </div>
       <div class="budget__column budget__column--hidden">

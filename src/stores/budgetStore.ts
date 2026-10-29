@@ -12,6 +12,9 @@ export const useBudgetStore = defineStore('budget', () => {
   const isLoading = ref(false);
   const isCreating = ref(false);
   const error = ref<string | null>(null);
+  const createError = ref<string | null>(null);
+  const deleteError = ref<string | null>(null);
+  const deletingId = ref<string | null>(null);
 
   const loadTransaction = async () => {
     isLoading.value = true;
@@ -30,30 +33,32 @@ export const useBudgetStore = defineStore('budget', () => {
 
   const updateTransactions = async (transaction: Budget) => {
     isCreating.value = true;
-    error.value = null;
+    createError.value = null;
+
     try {
       await fetchUpdateTransactions(transaction);
 
       transactions.value.push(transaction);
     } catch (err) {
       console.error(err);
-      error.value = 'Не удалось создать транзакцию. Попробуйте позже.';
+      createError.value = 'Не удалось создать транзакцию. Попробуйте позже.';
     } finally {
       isCreating.value = false;
     }
   };
 
   const deleteTransaction = async (id: string) => {
-    isLoading.value = true;
     error.value = null;
+    deletingId.value = id;
+
     try {
       await fetchDeleteTransaction(id);
       transactions.value = transactions.value.filter((item) => item.id !== id);
     } catch (err) {
       console.error(err);
-      error.value = 'Не удалось удалить транзакцию. Попробуйте позже.';
+      deleteError.value = 'Не удалось удалить транзакцию. Попробуйте позже.';
     } finally {
-      isLoading.value = false;
+      deletingId.value = null;
     }
   };
 
@@ -65,5 +70,7 @@ export const useBudgetStore = defineStore('budget', () => {
     updateTransactions,
     deleteTransaction,
     error,
+    deletingId,
+    createError,
   };
 });

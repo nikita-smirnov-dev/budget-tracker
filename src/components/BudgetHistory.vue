@@ -22,7 +22,6 @@ const props = withDefaults(
 );
 
 const transactionsRef = toRef(props, 'transactions');
-const emit = defineEmits(['delete-transaction']);
 
 const { filterHistory, filteredTransactions, emptyStateText } =
   useTransactionFilter(transactionsRef);
@@ -91,11 +90,7 @@ const { newTransactions } = useTransactionGroups(filteredTransactions);
             v-for="item of dayTransactions"
             :key="item.id"
           >
-            <BudgetItem
-              :transaction="item"
-              :currency="currency"
-              @delete="$emit('delete-transaction', $event)"
-            />
+            <BudgetItem :transaction="item" :currency="currency" />
           </li>
         </TransitionGroup>
       </li>

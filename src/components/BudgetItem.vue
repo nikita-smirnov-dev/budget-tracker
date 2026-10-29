@@ -1,13 +1,16 @@
 <script setup lang="ts">
+import { useBudgetStore } from '@/stores/budgetStore';
 import type { Budget } from '@/types/budgetTypes';
 import type { CurrencyType } from '@/types/currencyTypes';
 import BaseAmount from '@/UI/BaseAmount.vue';
+import BaseButton from '@/UI/BaseButton.vue';
+import BaseDataLoader from '@/UI/BaseDataLoader.vue';
 import { AkTrashCan } from '@kalimahapps/vue-icons';
 
 import { AkArrowUpRight } from '@kalimahapps/vue-icons';
 import { AkArrowDownLeft } from '@kalimahapps/vue-icons';
 
-const emit = defineEmits(['delete']);
+const budgetStore = useBudgetStore();
 
 const props = withDefaults(
   defineProps<{
@@ -34,13 +37,20 @@ const props = withDefaults(
     <span class="budget-item__sum">
       <BaseAmount :value="transaction.amount" :currency="currency" />
     </span>
-    <button
+    <BaseButton
       class="budget-item__delete btn-reset"
+      type="button"
       aria-label="Удалить"
-      @click="$emit('delete', props.transaction.id)"
+      variant-action="icon"
+      @click="budgetStore.deleteTransaction(props.transaction.id)"
     >
-      <AkTrashCan aria-hidden="true" />
-    </button>
+      <template v-if="budgetStore.deletingId === props.transaction.id">
+        <BaseDataLoader />
+      </template>
+      <template v-else>
+        <AkTrashCan aria-hidden="true" />
+      </template>
+    </BaseButton>
   </div>
 </template>
 

@@ -9,6 +9,8 @@ import BaseRadioGroup from '@/UI/BaseRadioGroup.vue';
 import type { TransactionType } from '@/types/budgetTypes';
 import { createTransaction } from '@/utils/createTransaction';
 import { useFormValidation } from '@/composables/useFormValidation';
+import { useBudgetStore } from '@/stores/budgetStore';
+import BaseError from '@/UI/BaseError.vue';
 
 const emit = defineEmits(['add-transaction']);
 
@@ -16,6 +18,7 @@ const props = defineProps<{
   selectedTitle?: string;
 }>();
 
+const budgetStore = useBudgetStore();
 const { isFormInvalid, isSubmitted } = useFormValidation(
   () =>
     budgetObj.value.title.trim() === '' ||
@@ -107,11 +110,17 @@ watch(
         >Расход</BaseInputRadio
       >
     </BaseRadioGroup>
+    <BaseError
+      v-if="budgetStore.createError"
+      :message="budgetStore.createError"
+    />
     <BaseButton
       class="budget-form__btn"
       type="submit"
-      :disabled="isSubmitted && isFormInvalid"
-      >Добавить транзакцию</BaseButton
+      :disabled="(isSubmitted && isFormInvalid) || budgetStore.isCreating"
+      >{{
+        budgetStore.isCreating ? 'Сохранение...' : 'Добавить транзакцию'
+      }}</BaseButton
     >
   </form>
 </template>
