@@ -6,14 +6,15 @@ import {
 import type { Budget, BudgetList } from '@/types/budgetTypes';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { useToastStore } from './toastStore';
 
 export const useBudgetStore = defineStore('budget', () => {
+  const toastStore = useToastStore();
   const transactions = ref<BudgetList>([]);
   const isLoading = ref(false);
   const isCreating = ref(false);
   const error = ref<string | null>(null);
-  const createError = ref<string | null>(null);
-  const deleteError = ref<string | null>(null);
+
   const deletingId = ref<string | null>(null);
 
   const loadTransaction = async () => {
@@ -33,7 +34,6 @@ export const useBudgetStore = defineStore('budget', () => {
 
   const updateTransactions = async (transaction: Budget) => {
     isCreating.value = true;
-    createError.value = null;
 
     try {
       await fetchUpdateTransactions(transaction);
@@ -41,7 +41,10 @@ export const useBudgetStore = defineStore('budget', () => {
       transactions.value.push(transaction);
     } catch (err) {
       console.error(err);
-      createError.value = 'Не удалось создать транзакцию. Попробуйте позже.';
+      toastStore.addToast({
+        message: 'Не удалось создать транзакцию',
+        type: 'error',
+      });
     } finally {
       isCreating.value = false;
     }
@@ -54,9 +57,16 @@ export const useBudgetStore = defineStore('budget', () => {
     try {
       await fetchDeleteTransaction(id);
       transactions.value = transactions.value.filter((item) => item.id !== id);
+      toastStore.addToast({
+        message: 'Транзакция успешно удалена',
+        type: 'success',
+      });
     } catch (err) {
       console.error(err);
-      deleteError.value = 'Не удалось удалить транзакцию. Попробуйте позже.';
+      toastStore.addToast({
+        message: 'Не удалось удалить транзакцию',
+        type: 'error',
+      });
     } finally {
       deletingId.value = null;
     }
@@ -71,6 +81,5 @@ export const useBudgetStore = defineStore('budget', () => {
     deleteTransaction,
     error,
     deletingId,
-    createError,
   };
 });

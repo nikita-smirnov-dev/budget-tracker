@@ -17,6 +17,7 @@ import type { CurrencyType } from '@/types/currencyTypes';
 import { useBudgetStore } from '@/stores/budgetStore';
 import BasePageLoader from '@/UI/BasePageLoader.vue';
 import BaseError from '@/UI/BaseError.vue';
+import ToastContainer from '@/components/ToastContainer.vue';
 
 const formTitle = ref('');
 const isOpen = ref<boolean>(false);
@@ -98,6 +99,7 @@ watch(currentCurrency, (newCurrency) => {
       @add-first-transaction="handleFirstInput"
     /> -->
     <template v-else>
+      <ToastContainer />
       <div class="budget__column">
         <BudgetBalance :total="totalBalance" :currency="currentCurrency" />
         <BaseButton
