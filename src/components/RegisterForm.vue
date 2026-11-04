@@ -10,28 +10,20 @@ const handleLoginClick = () => {
 </script>
 
 <template>
-  <div class="register">
-    <h3 class="register__title">Регистрация</h3>
-    <form class="register__form">
-      <BaseInput
-        class="register__input"
-        type="email"
-        placeholder="Электронная почта"
-      />
-      <BaseInput class="register__input" type="text" placeholder="Имя" />
-      <BaseInput class="register__input" type="text" placeholder="Фамилия" />
-      <BaseInput class="register__input" type="password" placeholder="Пароль" />
-      <BaseInput
-        class="register__input"
-        type="password"
-        placeholder="Подтвердите пароль"
-      />
-      <BaseButton class="register__btn" type="submit" variant-action="primary"
+  <div class="modal">
+    <h3 class="modal__title">Регистрация</h3>
+    <form class="modal__form">
+      <BaseInput type="email" placeholder="Электронная почта" />
+      <BaseInput type="text" placeholder="Имя" />
+      <BaseInput type="text" placeholder="Фамилия" />
+      <BaseInput type="password" placeholder="Пароль" />
+      <BaseInput type="password" placeholder="Подтвердите пароль" />
+      <BaseButton type="submit" variant-action="primary"
         >Создать аккаунт</BaseButton
       >
     </form>
     <BaseButton
-      class="register__btn--login"
+      class="modal__btn"
       type="button"
       variant-action="secondary"
       @click="handleLoginClick"
@@ -41,26 +33,8 @@ const handleLoginClick = () => {
 </template>
 
 <style scoped>
-.register {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 400px;
-  padding: 20px;
-  border-radius: 8px;
-  background: var(--card-bg-color);
-}
-
-.register__title {
-  margin: 0;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.register__form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-bottom: 30px;
+.modal__btn {
+  font-size: 0.8rem;
+  font-weight: normal;
 }
 </style>

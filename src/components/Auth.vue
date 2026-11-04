@@ -12,11 +12,17 @@ const switchForm = (newForm: 'login' | 'register') => {
 
 <template>
   <div class="auth">
-    <div v-if="form === 'login'"><LoginForm @switch-form="switchForm" /></div>
-    <div v-else="form === 'register'">
+    <template v-if="form === 'login'"
+      ><LoginForm @switch-form="switchForm"
+    /></template>
+    <template v-else="form === 'register'">
       <RegisterForm @switch-form="switchForm" />
-    </div>
+    </template>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.auth {
+  width: 100%;
+}
+</style>

@@ -19,6 +19,7 @@ import BasePageLoader from '@/UI/BasePageLoader.vue';
 import BaseError from '@/UI/BaseError.vue';
 import ToastContainer from '@/components/ToastContainer.vue';
 import { useModalStore } from '@/stores/modalStore';
+import Auth from '@/components/Auth.vue';
 
 const formTitle = ref('');
 // const isFirstStart = ref<boolean>(!localStorage.getItem('budget-first-start'));
@@ -99,7 +100,7 @@ watch(currentCurrency, (newCurrency) => {
         <BaseButton
           class="budget-btn"
           aria-label="откроыть форму добавления транзакции"
-          @click="modalStore.openModal"
+          @click="modalStore.openModal('transaction')"
         >
           <span class="budget-btn__text">Внести операцию</span>
         </BaseButton>
@@ -128,14 +129,18 @@ watch(currentCurrency, (newCurrency) => {
       </div>
       <BaseButton
         class="budget-btn--mobile"
-        aria-label="откроыть форму добавления транзакции"
-        @click="modalStore.openModal"
+        aria-label="открыть форму добавления транзакции"
+        @click="modalStore.openModal('transaction')"
       >
         <BsPlus class="budget-btn__icon" aria-hidden="true"
       /></BaseButton>
       <Transition name="modal">
         <Modal v-if="modalStore.isOpen">
-          <div class="budget-modal">
+          <Auth v-if="modalStore.currentView === 'auth'" />
+          <div
+            v-else-if="modalStore.currentView === 'transaction'"
+            class="modal budget-modal"
+          >
             <BudgetForm
               class="budget-modal__card"
               @add-transaction="handleAddTransaction"
@@ -201,13 +206,8 @@ watch(currentCurrency, (newCurrency) => {
   }
 
   .budget-modal {
-    display: flex;
-    flex-direction: column;
     gap: 40px;
-    width: 60%;
-    padding: 20px;
-    border-radius: 8px;
-    background: var(--card-bg-color);
+    max-width: 700px;
   }
 
   .budget-modal__card {

@@ -3,8 +3,10 @@ import { ref } from 'vue';
 
 export const useModalStore = defineStore('modal', () => {
   const isOpen = ref<boolean>(false);
+  const currentView = ref<'auth' | 'transaction' | null>(null);
 
-  const openModal = () => {
+  const openModal = (modalType: 'auth' | 'transaction') => {
+    currentView.value = modalType;
     isOpen.value = true;
   };
 
@@ -16,5 +18,6 @@ export const useModalStore = defineStore('modal', () => {
     isOpen,
     openModal,
     closeModal,
+    currentView,
   };
 });

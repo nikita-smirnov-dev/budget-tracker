@@ -1,0 +1,21 @@
+.modal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 20px;
+  border-radius: 8px;
+  background: var(--card-bg-color);
+}
+
+.modal__title {
+  margin: 0;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.modal__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 30px;
+}

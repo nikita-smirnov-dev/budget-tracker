@@ -28,7 +28,13 @@ onUnmounted(() => {
   <Teleport to="body">
     <Transition name="modal">
       <div class="modal-overlay" @click="modalStore.closeModal">
-        <div class="modal-content" @click.stop>
+        <div
+          class="modal-content"
+          :class="
+            modalStore.currentView === 'auth' ? 'modal-content--auth' : ''
+          "
+          @click.stop
+        >
           <slot />
           <BaseButton
             v-if="showClose"
@@ -66,6 +72,11 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   padding: 20px 20px;
+  width: 100%;
+}
+
+.modal-content--auth {
+  max-width: 450px;
 }
 
 .modal-close {

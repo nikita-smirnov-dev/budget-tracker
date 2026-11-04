@@ -26,7 +26,7 @@ const modalStore = useModalStore();
         <BaseButton
           type="button"
           variant-action="primary"
-          @click="modalStore.openModal"
+          @click="modalStore.openModal('auth')"
           >Войти</BaseButton
         >
       </div>
