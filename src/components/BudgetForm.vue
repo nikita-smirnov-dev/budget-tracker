@@ -10,7 +10,6 @@ import type { TransactionType } from '@/types/budgetTypes';
 import { createTransaction } from '@/utils/createTransaction';
 import { useFormValidation } from '@/composables/useFormValidation';
 import { useBudgetStore } from '@/stores/budgetStore';
-import BaseError from '@/UI/BaseError.vue';
 
 const emit = defineEmits(['add-transaction']);
 
@@ -110,10 +109,7 @@ watch(
         >Расход</BaseInputRadio
       >
     </BaseRadioGroup>
-    <BaseError
-      v-if="budgetStore.createError"
-      :message="budgetStore.createError"
-    />
+
     <BaseButton
       class="budget-form__btn"
       type="submit"

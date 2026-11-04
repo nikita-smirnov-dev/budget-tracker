@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useModalStore } from '@/stores/modalStore';
+import BaseButton from '@/UI/BaseButton.vue';
 import Logo from '@/UI/Logo.vue';
 import ThemeToggle from '@/UI/ThemeToggle.vue';
 
@@ -7,6 +9,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(['select-theme']);
+const modalStore = useModalStore();
 </script>
 
 <template>
@@ -14,7 +17,19 @@ const emit = defineEmits(['select-theme']);
     <div class="container header__container">
       <Logo />
 
-      <ThemeToggle :theme="theme" @select-theme="emit('select-theme')" />
+      <div
+        class="header__actions"
+        role="toolbar"
+        aria-label="Управление приложением"
+      >
+        <ThemeToggle :theme="theme" @select-theme="emit('select-theme')" />
+        <BaseButton
+          type="button"
+          variant-action="primary"
+          @click="modalStore.openModal"
+          >Войти</BaseButton
+        >
+      </div>
     </div>
   </header>
 </template>
@@ -29,6 +44,12 @@ const emit = defineEmits(['select-theme']);
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 @media (max-width: 575.98px) {
