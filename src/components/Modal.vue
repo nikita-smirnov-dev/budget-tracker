@@ -2,6 +2,7 @@
 import { MdClose } from '@kalimahapps/vue-icons';
 import BaseButton from '@/UI/BaseButton.vue';
 import { onMounted, onUnmounted } from 'vue';
+import { useModalStore } from '@/stores/modalStore';
 
 const props = withDefaults(
   defineProps<{
@@ -12,7 +13,7 @@ const props = withDefaults(
   },
 );
 
-defineEmits(['close']);
+const modalStore = useModalStore();
 
 onMounted(() => {
   document.body.classList.add('stop-scroll');
@@ -26,7 +27,7 @@ onUnmounted(() => {
 <template>
   <Teleport to="body">
     <Transition name="modal">
-      <div class="modal-overlay" @click="$emit('close')">
+      <div class="modal-overlay" @click="modalStore.closeModal">
         <div class="modal-content" @click.stop>
           <slot />
           <BaseButton
@@ -34,7 +35,7 @@ onUnmounted(() => {
             class="modal-close"
             variant-action="secondary"
             aria-label="Закрыть модальное окно"
-            @click="$emit('close')"
+            @click="modalStore.closeModal"
           >
             <MdClose class="modal-close__icon" aria-hidden="true" />
           </BaseButton>

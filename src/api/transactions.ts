@@ -3,9 +3,10 @@ import {
   BaseBudgetSchema,
   BudgetListSchema,
   type Budget,
+  type BudgetList,
 } from '@/types/budgetTypes';
 
-export const fetchLoadTransaction = async () => {
+export const fetchLoadTransaction = async (): Promise<BudgetList> => {
   try {
     const response = await fetch(`${API_BASE_URL}`);
 
@@ -21,7 +22,9 @@ export const fetchLoadTransaction = async () => {
   }
 };
 
-export const fetchUpdateTransactions = async (transaction: Budget) => {
+export const fetchUpdateTransactions = async (
+  transaction: Budget,
+): Promise<Budget> => {
   try {
     const response = await fetch(`${API_BASE_URL}`, {
       method: 'POST',
@@ -43,7 +46,7 @@ export const fetchUpdateTransactions = async (transaction: Budget) => {
   }
 };
 
-export const fetchDeleteTransaction = async (id: string) => {
+export const fetchDeleteTransaction = async (id: string): Promise<Budget> => {
   try {
     const response = await fetch(`${API_BASE_URL}/${id}`, {
       method: 'DELETE',

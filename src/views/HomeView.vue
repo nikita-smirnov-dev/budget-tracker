@@ -18,9 +18,9 @@ import { useBudgetStore } from '@/stores/budgetStore';
 import BasePageLoader from '@/UI/BasePageLoader.vue';
 import BaseError from '@/UI/BaseError.vue';
 import ToastContainer from '@/components/ToastContainer.vue';
+import { useModalStore } from '@/stores/modalStore';
 
 const formTitle = ref('');
-const isOpen = ref<boolean>(false);
 // const isFirstStart = ref<boolean>(!localStorage.getItem('budget-first-start'));
 
 const currentCurrency = ref<CurrencyType>(
@@ -28,18 +28,11 @@ const currentCurrency = ref<CurrencyType>(
 );
 
 const budgetStore = useBudgetStore();
+const modalStore = useModalStore();
 
 onMounted(() => {
   budgetStore.loadTransaction();
 });
-
-const handleOpenModal = () => {
-  isOpen.value = true;
-};
-
-const handleCloseModal = () => {
-  isOpen.value = false;
-};
 
 const totalBalance = computed(() => {
   const total = budgetStore.transactions.reduce((acc, item) => {
@@ -70,8 +63,9 @@ const handleCurrencyChange = (value: CurrencyType) => {
 
 const handleAddTransaction = async (transaction: Budget) => {
   await budgetStore.updateTransactions(transaction);
-  if (isOpen.value) {
-    handleCloseModal();
+  if (modalStore.isOpen) {
+    // handleCloseModal();
+    modalStore.closeModal();
   }
 };
 
@@ -105,7 +99,7 @@ watch(currentCurrency, (newCurrency) => {
         <BaseButton
           class="budget-btn"
           aria-label="откроыть форму добавления транзакции"
-          @click="handleOpenModal"
+          @click="modalStore.openModal"
         >
           <span class="budget-btn__text">Внести операцию</span>
         </BaseButton>
@@ -135,12 +129,12 @@ watch(currentCurrency, (newCurrency) => {
       <BaseButton
         class="budget-btn--mobile"
         aria-label="откроыть форму добавления транзакции"
-        @click="handleOpenModal"
+        @click="modalStore.openModal"
       >
         <BsPlus class="budget-btn__icon" aria-hidden="true"
       /></BaseButton>
       <Transition name="modal">
-        <Modal v-if="isOpen" @close="handleCloseModal">
+        <Modal v-if="modalStore.isOpen">
           <div class="budget-modal">
             <BudgetForm
               class="budget-modal__card"
