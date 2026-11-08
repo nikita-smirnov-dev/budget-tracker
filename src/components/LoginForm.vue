@@ -35,5 +35,13 @@ const handleRegisterClick = () => {
 .modal__btn {
   font-size: 0.8rem;
   font-weight: normal;
+  opacity: 0.6;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.modal__btn:hover {
+  font-size: 0.8rem;
+  font-weight: normal;
+  opacity: 1;
 }
 </style>

@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '@/constants';
+import { API_BASE_URL, ENDPOINTS } from '@/constants';
 import {
   BaseBudgetSchema,
   BudgetListSchema,
@@ -8,7 +8,7 @@ import {
 
 export const fetchLoadTransaction = async (): Promise<BudgetList> => {
   try {
-    const response = await fetch(`${API_BASE_URL}`);
+    const response = await fetch(`${API_BASE_URL}${ENDPOINTS.transaction}`);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -26,7 +26,7 @@ export const fetchUpdateTransactions = async (
   transaction: Budget,
 ): Promise<Budget> => {
   try {
-    const response = await fetch(`${API_BASE_URL}`, {
+    const response = await fetch(`${API_BASE_URL}${ENDPOINTS.transaction}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -48,9 +48,12 @@ export const fetchUpdateTransactions = async (
 
 export const fetchDeleteTransaction = async (id: string): Promise<Budget> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/${id}`, {
-      method: 'DELETE',
-    });
+    const response = await fetch(
+      `${API_BASE_URL}${ENDPOINTS.transaction}/${id}`,
+      {
+        method: 'DELETE',
+      },
+    );
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

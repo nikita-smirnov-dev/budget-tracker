@@ -8,4 +8,12 @@ export const DEFAULT_TAGS: ITags[] = [
   { id: '5', title: 'Зарплата' },
 ];
 
-export const API_BASE_URL = 'http://localhost:3000/api/transaction';
+export const API_BASE_URL = 'http://localhost:3000/api';
+
+export const ENDPOINTS = {
+  transaction: '/transaction',
+  auth: {
+    register: '/auth/register',
+    login: '/auth/login',
+  },
+} as const;
