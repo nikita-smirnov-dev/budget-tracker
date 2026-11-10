@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useField } from 'vee-validate';
+
 const props = withDefaults(
   defineProps<{
     placeholder?: string;
@@ -19,25 +21,44 @@ const props = withDefaults(
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string | number): void;
 }>();
+
+const {
+  value: fieldValue,
+  errorMessage,
+  handleChange,
+} = useField(() => props.name || '', undefined, {
+  initialValue: props.modelValue ?? '',
+  syncVModel: props.name ? false : true,
+});
+
+const onInput = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+
+  if (props.name) {
+    handleChange(target.value);
+  } else {
+    emit('update:modelValue', target.value);
+  }
+};
 </script>
 
 <template>
   <label>
-    <div :class="{ 'input-error': isError }">
+    <div :class="{ 'input-error': errorMessage }">
       <input
         :class="['input-reset', inputClass, 'base-input']"
         :type="type"
         :step="step"
         :placeholder="placeholder"
-        :value="modelValue"
+        :value="props.name ? fieldValue : modelValue"
         :name="name"
-        @input="
-          $emit('update:modelValue', ($event.target as HTMLInputElement).value)
-        "
+        @input="onInput"
       />
       <slot></slot>
     </div>
-    <span v-if="isError" class="error-text">{{ isError }}</span>
+    <span v-if="errorMessage || isError" class="error-text">{{
+      errorMessage || isError
+    }}</span>
   </label>
 </template>
 

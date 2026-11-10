@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useModalStore } from '@/stores/modalStore';
+import { useUserStore } from '@/stores/userStore';
 import BaseButton from '@/UI/BaseButton.vue';
 import Logo from '@/UI/Logo.vue';
 import ThemeToggle from '@/UI/ThemeToggle.vue';
@@ -10,6 +11,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['select-theme']);
 const modalStore = useModalStore();
+const userStore = useUserStore();
 </script>
 
 <template>
@@ -24,6 +26,14 @@ const modalStore = useModalStore();
       >
         <ThemeToggle :theme="theme" @select-theme="emit('select-theme')" />
         <BaseButton
+          v-if="userStore.user"
+          type="button"
+          variant-action="primary"
+          @click="modalStore.openModal('auth')"
+          >{{ userStore.user.name }}</BaseButton
+        >
+        <BaseButton
+          v-else
           type="button"
           variant-action="primary"
           @click="modalStore.openModal('auth')"

@@ -11,6 +11,12 @@ import { createTransaction } from '@/utils/createTransaction';
 import { useFormValidation } from '@/composables/useFormValidation';
 import { useBudgetStore } from '@/stores/budgetStore';
 
+const budgetObj = ref({
+  title: '',
+  amount: null as number | null,
+  type: 'income' as TransactionType,
+});
+
 const emit = defineEmits(['add-transaction']);
 
 const props = defineProps<{
@@ -24,12 +30,6 @@ const { isFormInvalid, isSubmitted } = useFormValidation(
     budgetObj.value.amount === null ||
     budgetObj.value.amount <= 0,
 );
-
-const budgetObj = ref({
-  title: '',
-  amount: null as number | null,
-  type: 'income' as TransactionType,
-});
 
 const sendForm = () => {
   isSubmitted.value = true;
